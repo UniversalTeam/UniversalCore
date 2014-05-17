@@ -1,4 +1,4 @@
 UniversalCore
 =============
 
-The Mian Mod That Loads All of UniversalTeam's Mods
+The Main Mod That Loads All of UniversalTeam's Mods

@@ -1,8 +1,10 @@
 package main.java.universalcore.sound;
 
 /**
- * Created by SeamusFD on 5/19/14.
- * All rights belong to me!!
+ * 
+ * @author SeamusFD
+ * 
  */
 public class SoundHandler {
+  
 }

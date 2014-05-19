@@ -7,8 +7,9 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * Created by SeamusFD on 5/18/14.
- * All rights belong to me!!
+ * 
+ * @author SeamusFD
+ * 
  */
 @SideOnly(Side.CLIENT)
 public class SoundHandler implements ISound {

@@ -18,7 +18,6 @@ public class UniversalCore{
     @Mod.EventHandler
     public void PreInit(FMLPreInitializationEvent event){
 
-        MCMod.MetaMcMod();
         ModCompatibilities.idModLoaded();
     }
 

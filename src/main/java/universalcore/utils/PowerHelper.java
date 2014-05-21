@@ -1,8 +1,5 @@
 package universalcore.utils;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-
 /**
  *
  * @author UniversalRed

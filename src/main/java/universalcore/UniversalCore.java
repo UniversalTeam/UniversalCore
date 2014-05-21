@@ -1,11 +1,10 @@
 package universalcore;
 
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import universalcore.libs.*;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import net.minecraft.init.Blocks;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import universalcore.libs.ReferenceCore;
 import universalcore.mods.ModCompatibilities;
 import universalcore.proxies.CommonProxy;
 

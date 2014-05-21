@@ -1,4 +1,4 @@
-package main.java.universalcore.sound;
+package universalcore.sound;
 
 /**
  * 

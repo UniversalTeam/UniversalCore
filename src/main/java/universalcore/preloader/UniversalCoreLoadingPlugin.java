@@ -1,13 +1,19 @@
-package universalcore.coremod;
+package universalcore.preloader;
 
+import codechicken.core.launch.DepLoader;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 import java.util.Map;
 
-public class LoadingPlugin implements IFMLLoadingPlugin {
+public class UniversalCoreLoadingPlugin implements IFMLLoadingPlugin {
+
+	public UniversalCoreLoadingPlugin() {
+		DepLoader.load();
+	}
+
     @Override
     public String[] getASMTransformerClass() {
-        return new String[]{ClassTranformer.class.getName()};
+        return null;
     }
 
     @Override

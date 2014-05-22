@@ -15,11 +15,12 @@ hs_err_pid*
 .project
 .settings
 .metadata
-bin
+eclipse/
+bin/
 
 # gradle
-.gradle
-build
+.gradle/
+build/
 
 # intelij
 out
@@ -27,5 +28,7 @@ out
 *.iml
 *.ipr
 *.iws
+.idea/
+idea/
 
 thumbs.db

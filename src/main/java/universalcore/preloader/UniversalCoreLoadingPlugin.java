@@ -60,6 +60,8 @@ public class UniversalCoreLoadingPlugin implements IFMLLoadingPlugin, IFMLCallHo
 	@Override
 	public Void call() throws Exception
 	{
+		scanModsForUCAccessTransformer();
+
 		return null;
 	}
 

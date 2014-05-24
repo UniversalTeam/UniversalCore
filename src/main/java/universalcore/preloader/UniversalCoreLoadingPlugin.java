@@ -60,12 +60,12 @@ public class UniversalCoreLoadingPlugin implements IFMLLoadingPlugin, IFMLCallHo
 	@Override
 	public Void call() throws Exception
 	{
-		scanModsForUCAccessTransformer();
+		scanMods();
 
 		return null;
 	}
 
-	private void scanModsForUCAccessTransformer()
+	private void scanMods()
 	{
 		File modsDir = new File(mcDir, "mods");
 		if (modsDir.exists())
@@ -99,6 +99,10 @@ public class UniversalCoreLoadingPlugin implements IFMLLoadingPlugin, IFMLCallHo
 				String mapFile = attr.getValue("UCAccessTransformer");
 				if (mapFile != null)
 					UniversalCoreAccessTransformer.addTransformerMap(mapFile);
+
+				String pluginListener = attr.getValue("UCPluginListener");
+				if (pluginListener != null)
+					return; //TODO implement proper way of doing this.
 			}
 			finally
 			{

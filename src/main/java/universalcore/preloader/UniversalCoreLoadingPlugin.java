@@ -54,7 +54,7 @@ public class UniversalCoreLoadingPlugin implements IFMLLoadingPlugin, IFMLCallHo
 	@Override
 	public String getAccessTransformerClass()
 	{
-		return null;
+		return "universalcore.preloader.UniversalCoreAccessTransformer";
 	}
 
 	@Override
@@ -70,13 +70,19 @@ public class UniversalCoreLoadingPlugin implements IFMLLoadingPlugin, IFMLCallHo
 		File modsDir = new File(mcDir, "mods");
 		if (modsDir.exists())
 			for (File mod : modsDir.listFiles())
+			{
 				scanMod(mod);
+				UniversalCorePluginDetector.findPlugins(mod);
+			}
 
 		File versionModsDir = new File(modsDir, mcVersion);
 
 		if (versionModsDir.exists())
 			for (File mod : versionModsDir.listFiles())
+			{
 				scanMod(mod);
+				UniversalCorePluginDetector.findPlugins(mod);
+			}
 	}
 
 	private void scanMod(File mod)
@@ -102,7 +108,16 @@ public class UniversalCoreLoadingPlugin implements IFMLLoadingPlugin, IFMLCallHo
 
 				String pluginListener = attr.getValue("UCPluginListener");
 				if (pluginListener != null)
-					return; //TODO implement proper way of doing this.
+				{
+					try
+					{
+						UniversalCorePluginDetector.registerPluginListener(Class.forName(pluginListener));
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
 			}
 			finally
 			{

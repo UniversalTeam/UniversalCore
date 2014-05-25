@@ -6,5 +6,5 @@ public interface IPluginListener
 {
 	public String getModID();
 
-	public void handle(Collection<Class<?>> plugin);
+	public void handle(Collection<Class<?>> plugins);
 }

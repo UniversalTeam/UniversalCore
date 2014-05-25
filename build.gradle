@@ -44,5 +44,6 @@ processResources
 jar {
     manifest {
         attributes 'FMLCorePlugin': 'universalcore.preloader.UniversalCoreLoadingPlugin'
+        attributes 'UCPluginListener': 'universalcore.compat.UCPluginListener'
     }
 }

@@ -9,20 +9,20 @@ import universalcore.mods.ModCompatibilities;
 import universalcore.proxies.CommonProxy;
 
 @Mod(modid = ReferenceCore.MODID, name = ReferenceCore.MODNAME, version = ReferenceCore.VERSION, dependencies = "required-after:Forge@[10.12.1.1082,)")
-public class UniversalCore{
+public class UniversalCore
+{
+	@SidedProxy(clientSide = "universalcore.proxies.ClientProxy", serverSide = "universalcore.proxies.CommonProxy")
+	public static CommonProxy proxy;
 
-    @SidedProxy(clientSide = "universalcore.proxies.ClientProxy", serverSide = "universalcore.proxies.CommonProxy")
-    public static CommonProxy proxy;
+	@Mod.EventHandler
+	public void PreInit(FMLPreInitializationEvent event)
+	{
+		ModCompatibilities.idModLoaded();
+	}
 
-    @Mod.EventHandler
-    public void PreInit(FMLPreInitializationEvent event){
+	@Mod.EventHandler
+	public void init(FMLInitializationEvent event)
+	{
 
-        ModCompatibilities.idModLoaded();
-    }
-
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event){
-
-
-    }
+	}
 }

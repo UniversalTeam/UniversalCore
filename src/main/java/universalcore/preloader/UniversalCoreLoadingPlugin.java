@@ -83,6 +83,8 @@ public class UniversalCoreLoadingPlugin implements IFMLLoadingPlugin, IFMLCallHo
 				scanMod(mod);
 				UniversalCorePluginDetector.findPlugins(mod);
 			}
+
+		UniversalCorePluginDetector.handlePlugins();
 	}
 
 	private void scanMod(File mod)

@@ -51,4 +51,22 @@ public class UniversalCorePluginDetector
 			e.printStackTrace();
 		}
 	}
+
+	public static void handlePlugins()
+	{
+		for (Class<?> clazz : pluginListeners)
+		{
+			try
+			{
+				IPluginListener listener = (IPluginListener) clazz.newInstance();
+
+				if (plugins.containsKey(listener.getModID()))
+					listener.handle(plugins.get(listener.getModID()));
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
 }

@@ -20,7 +20,6 @@ public class ItemParts extends Item
 {
 	public List<Integer> itemList = new ArrayList<Integer>();
 	public Map<Integer, ItemEntry> itemMap = new HashMap<Integer, ItemEntry>();
-	//public IIcon[] icons = new IIcon[128];
 	public Map<String, IIcon> icons = Maps.newHashMap();
 
 	public String domain;

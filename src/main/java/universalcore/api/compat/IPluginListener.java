@@ -1,10 +1,10 @@
 package universalcore.api.compat;
 
+import java.util.Collection;
+
 public interface IPluginListener
 {
 	public String getModID();
 
-	public void handle();
-
-	public void handleClient();
+	public void handle(Collection<Class<?>> plugin);
 }

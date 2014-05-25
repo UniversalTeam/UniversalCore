@@ -1,6 +1,8 @@
 package universalcore.compat;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import cpw.mods.fml.common.Loader;
 import universalcore.api.compat.IPluginListener;
 import universalcore.api.compat.UCPlugin;
 import universalcore.libs.ReferenceCore;
@@ -29,6 +31,14 @@ public class UCPluginListener implements IPluginListener
 	{
 		for (Class<?> clazz : plugins)
 		{
+			UCPlugin plugin = clazz.getAnnotation(UCPlugin.class);
+
+			for (String requiredModID : Splitter.on(';').split(plugin.requires()))
+			{
+				if (!Loader.isModLoaded(requiredModID))
+					break;
+			}
+
 			List<Method> methods = Arrays.asList(clazz.getMethods());
 
 			for (Method method : methods)

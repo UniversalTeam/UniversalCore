@@ -6,7 +6,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import universalcore.libs.ReferenceCore;
-import universalcore.mods.ModCompatibilities;
 import universalcore.proxies.CommonProxy;
 
 @Mod(modid = ReferenceCore.MODID, name = ReferenceCore.MODNAME, version = ReferenceCore.VERSION, dependencies = "required-after:Forge@[10.12.1.1082,)")
@@ -19,7 +18,6 @@ public class UniversalCore
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		proxy.preInit();
-		ModCompatibilities.idModLoaded();
 	}
 
 	@Mod.EventHandler

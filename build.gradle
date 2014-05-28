@@ -26,7 +26,7 @@ buildProps.withReader {
 }
 
 version = "${config.version.mod.major}.${config.version.mod.minor}.${config.version.mod.revision}"
-group= "universalcore"
+group= "universalteam.universalcore"
 archivesBaseName = "UniversalCore"
 
 minecraft {
@@ -51,7 +51,7 @@ processResources
 
 jar {
     manifest {
-        attributes 'FMLCorePlugin': 'universalcore.preloader.UniversalCoreLoadingPlugin'
-        attributes 'UCPluginListener': 'universalcore.compat.UCPluginListener'
+        attributes 'FMLCorePlugin': 'UniversalCoreLoadingPlugin'
+        attributes 'UCPluginListener': 'UCPluginListener'
     }
 }

@@ -54,7 +54,7 @@ public class UniversalCoreLoadingPlugin implements IFMLLoadingPlugin, IFMLCallHo
 	@Override
 	public String getAccessTransformerClass()
 	{
-		return "UniversalCoreAccessTransformer";
+		return "universalteam.universalcore.preloader.UniversalCoreAccessTransformer";
 	}
 
 	@Override

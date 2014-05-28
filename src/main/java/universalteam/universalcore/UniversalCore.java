@@ -11,7 +11,7 @@ import universalteam.universalcore.proxies.CommonProxy;
 @Mod(modid = ReferenceCore.MODID, name = ReferenceCore.MODNAME, version = ReferenceCore.VERSION, dependencies = "required-after:Forge@[10.12.1.1082,)")
 public class UniversalCore
 {
-	@SidedProxy(clientSide = "ClientProxy", serverSide = "CommonProxy")
+	@SidedProxy(clientSide = "universalteam.universalcore.proxies.ClientProxy", serverSide = "universalteam.universalcore.proxies.CommonProxy")
 	public static CommonProxy proxy;
 
 	@Mod.EventHandler

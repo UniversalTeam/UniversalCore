@@ -17,12 +17,20 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.0"
+ext.buildProps = file "build.properties"
+
+buildProps.withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
+version = "${config.version.mod.major}.${config.version.mod.minor}.${config.version.mod.revision}"
 group= "universalcore"
 archivesBaseName = "UniversalCore"
 
 minecraft {
-    version = "1.7.2-10.12.1.1082"
+    version = "${config.version.minecraft}-${config.version.forge}"
     assetDir = "eclipse/assets"
 }
 processResources

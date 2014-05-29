@@ -1,5 +1,7 @@
 package universalteam.universalcore.proxies;
 
+import net.minecraftforge.common.MinecraftForge;
+import universalteam.universalcore.client.CapeEventHandler;
 import universalteam.universalcore.compat.UCPluginListener;
 
 public class ClientProxy extends CommonProxy
@@ -8,12 +10,15 @@ public class ClientProxy extends CommonProxy
 	public void preInit()
 	{
 		super.preInit();
+
+		initClientEventHandlers();
 	}
 
 	@Override
 	public void init()
 	{
 		super.init();
+
 		UCPluginListener.handleClient();
 	}
 
@@ -21,5 +26,10 @@ public class ClientProxy extends CommonProxy
 	public void postInit()
 	{
 		super.postInit();
+	}
+
+	public void initClientEventHandlers()
+	{
+		MinecraftForge.EVENT_BUS.register(new CapeEventHandler());
 	}
 }

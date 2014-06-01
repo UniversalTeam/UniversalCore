@@ -39,13 +39,14 @@ minecraft {
 processResources
 {
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
+        include '*.info'
                 
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version':project.version, 'mcversion':project.minecraft.version, 'cclversion':config.version.ccl
     }
         
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        include '**/*.info'
+        include '**/*.properties'
     }
 }
 

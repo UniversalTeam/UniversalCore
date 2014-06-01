@@ -29,6 +29,11 @@ version = "${config.version.mod}"
 group= "universalteam.universalcore"
 archivesBaseName = "UniversalCore"
 
+dependencies {
+    compile "codechicken:CodeChickenLib:${config.version.minecraft}-${config.version.ccl}:dev"
+}
+
+
 minecraft {
     version = "${config.version.minecraft}-${config.version.forge}"
     assetDir = "eclipse/assets"

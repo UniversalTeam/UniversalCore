@@ -3,22 +3,10 @@ package universalteam.universalcore.multiblock;
 import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.vec.CuboidCoord;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 abstract public class MultiBlock
 {
-	public TileMultiBlock host;
 	public CuboidCoord bounds;
-
-	public MultiBlock(TileMultiBlock host)
-	{
-		this.host = host;
-	}
-
-	public World world()
-	{
-		return host.getWorldObj();
-	}
 
 	public void save(NBTTagCompound compound)
 	{

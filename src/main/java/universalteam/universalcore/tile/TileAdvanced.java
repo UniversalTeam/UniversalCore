@@ -1,8 +1,7 @@
-package universalteam.universalcore.multiblock;
+package universalteam.universalcore.tile;
 
 import codechicken.lib.packet.ICustomPacketTile;
 import codechicken.lib.packet.PacketCustom;
-import codechicken.lib.vec.BlockCoord;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -10,11 +9,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 
-abstract public class TileMultiBlock<T extends MultiBlock> extends TileEntity implements ICustomPacketTile
+abstract public class TileAdvanced extends TileEntity implements ICustomPacketTile
 {
-	private BlockCoord parent = new BlockCoord();
-	private T multiBlock;
-
 	public abstract void save(NBTTagCompound compound);
 
 	public abstract void load(NBTTagCompound compound);
@@ -25,7 +21,7 @@ abstract public class TileMultiBlock<T extends MultiBlock> extends TileEntity im
 
 	public abstract void onPlaced(EntityLivingBase entity, ItemStack stack);
 
-	public abstract void activate(EntityPlayer player, int side, ItemStack stack);
+	public abstract boolean activate(EntityPlayer player, int side, ItemStack stack);
 
 	public abstract void click(EntityPlayer player, ItemStack stack);
 

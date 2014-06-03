@@ -1,5 +1,6 @@
 package universalteam.universalcore.client;
 
+import com.google.common.base.Strings;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -81,7 +82,7 @@ public class CapeEventHandler
 			int linetracker = 1;
 			while ((str = br.readLine()) != null)
 			{
-				if (!str.startsWith("--"))
+				if (!str.startsWith("--") || !Strings.isNullOrEmpty(str))
 				{
 					if (str.contains(":"))
 					{
@@ -124,7 +125,7 @@ public class CapeEventHandler
 				Image cape = new ImageIcon(new URL(cloakURL)).getImage();
 				BufferedImage bo = new BufferedImage(cape.getWidth(null), cape.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 				bo.getGraphics().drawImage(cape, 0, 0, null);
-				ReflectionHelper.setPrivateValue(ThreadDownloadImageData.class, abstractClientPlayer.getTextureCape(), bo, new String[] { "bufferedImage", "field_110560_d" });
+				ReflectionHelper.setPrivateValue(ThreadDownloadImageData.class, abstractClientPlayer.getTextureCape(), bo, new String[]{"bufferedImage", "field_110560_d"});
 			}
 			catch (Exception e)
 			{

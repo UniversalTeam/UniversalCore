@@ -128,14 +128,18 @@ public class DevRenderEventHandler
 
 	public void refreshEntry(EntityPlayer player)
 	{
-		refreshEntry(player.getCommandSenderName());
+		if (player != null)
+			refreshEntry(player.getCommandSenderName());
 	}
 
 	public void refreshEntry(String username)
 	{
 		if (username == null)
+		{
 			for (String alt : renderEntries.keySet())
 				updateEntry(alt);
+			return;
+		}
 
 		updateEntry(username);
 	}

@@ -1,5 +1,6 @@
 package universalteam.universalcore.command;
 
+import com.google.common.collect.Lists;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.SyntaxErrorException;
@@ -75,8 +76,9 @@ public class UCCommand extends CommandBase
 	@Override
 	public List addTabCompletionOptions(ICommandSender sender, String[] args)
 	{
-		List<String> players = ServerUtil.getAllPlayers_list();
+		List<String> players = Lists.newArrayList(ServerUtil.getAllPlayers_list());
 		players.add("all");
-		return args.length == 1 ? getListOfStringsMatchingLastWord(args, "updateCapes", "updateDevRender") : args.length == 2 ? getListOfStringsMatchingLastWord(args, (String[]) players.toArray()) : null;
+		String[] names = new String[players.size()];
+		return args.length == 1 ? getListOfStringsMatchingLastWord(args, "updateCapes", "updateDevRender") : args.length == 2 ? getListOfStringsMatchingLastWord(args, players.toArray(names)) : null;
 	}
 }

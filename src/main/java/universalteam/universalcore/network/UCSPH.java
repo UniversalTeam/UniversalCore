@@ -17,7 +17,19 @@ public class UCSPH implements PacketCustom.IServerPacketHandler
 		switch (packet.getType())
 		{
 			case UPDATE_DEV_RENDER:
-				packet.sendToClients();
+				resendDevRenderPacket(packet);
 		}
+	}
+
+	protected void resendDevRenderPacket(PacketCustom packet)
+	{
+		PacketCustom p = new PacketCustom(CHANNEL, UPDATE_DEV_RENDER);
+		p.writeString(packet.readString());
+		p.writeFloat(packet.readFloat());
+		p.writeFloat(packet.readFloat());
+		p.writeFloat(packet.readFloat());
+		p.writeFloat(packet.readFloat());
+		p.writeBoolean(packet.readBoolean());
+		p.sendToClients();
 	}
 }

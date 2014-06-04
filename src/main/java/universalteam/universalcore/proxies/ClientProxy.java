@@ -34,6 +34,12 @@ public class ClientProxy extends CommonProxy
 		super.postInit();
 	}
 
+	@Override
+	public void serverStarting()
+	{
+		super.serverStarting();
+	}
+
 	public void initClientEventHandlers()
 	{
 		MinecraftForge.EVENT_BUS.register(new CapeEventHandler());

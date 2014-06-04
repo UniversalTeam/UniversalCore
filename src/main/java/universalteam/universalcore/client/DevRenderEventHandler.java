@@ -100,13 +100,13 @@ public class DevRenderEventHandler
 		{
 			JsonObject colorNode = node.getAsJsonObject("color");
 			if (colorNode.has("red"))
-				entry.setRed(colorNode.getAsJsonObject("red").getAsFloat());
+				entry.setRed(colorNode.get("red").getAsFloat());
 			if (colorNode.has("green"))
-				entry.setGreen(colorNode.getAsJsonObject("green").getAsFloat());
+				entry.setGreen(colorNode.get("green").getAsFloat());
 			if (colorNode.has("blue"))
-				entry.setBlue(colorNode.getAsJsonObject("blue").getAsFloat());
+				entry.setBlue(colorNode.get("blue").getAsFloat());
 			if (colorNode.has("alpha"))
-				entry.setAlpha(colorNode.getAsJsonObject("alpha").getAsFloat());
+				entry.setAlpha(colorNode.get("alpha").getAsFloat());
 		}
 
 		return entry;

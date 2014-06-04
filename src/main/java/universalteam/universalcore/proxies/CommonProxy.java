@@ -10,7 +10,7 @@ public class CommonProxy
 {
 	public void preInit()
 	{
-		initCommands();
+
 	}
 
 	public void init()
@@ -23,6 +23,11 @@ public class CommonProxy
 	public void postInit()
 	{
 
+	}
+
+	public void serverStarting()
+	{
+		initCommands();
 	}
 
 	protected void initCommands()

@@ -2,6 +2,7 @@ package universalteam.universalcore.proxies;
 
 import net.minecraftforge.common.MinecraftForge;
 import universalteam.universalcore.client.CapeEventHandler;
+import universalteam.universalcore.client.DevRenderEventHandler;
 import universalteam.universalcore.compat.UCPluginListener;
 
 public class ClientProxy extends CommonProxy
@@ -31,5 +32,6 @@ public class ClientProxy extends CommonProxy
 	public void initClientEventHandlers()
 	{
 		MinecraftForge.EVENT_BUS.register(new CapeEventHandler());
+		MinecraftForge.EVENT_BUS.register(new DevRenderEventHandler());
 	}
 }

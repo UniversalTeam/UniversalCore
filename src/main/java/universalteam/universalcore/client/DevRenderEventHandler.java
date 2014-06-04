@@ -1,5 +1,6 @@
 package universalteam.universalcore.client;
 
+import codechicken.lib.packet.PacketCustom;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
@@ -10,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import org.lwjgl.opengl.GL11;
+import universalteam.universalcore.network.UCSPH;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -100,11 +102,11 @@ public class DevRenderEventHandler
 			if (colorNode.has("red"))
 				entry.setRed(colorNode.getAsJsonObject("red").getAsFloat());
 			if (colorNode.has("green"))
-				entry.setRed(colorNode.getAsJsonObject("green").getAsFloat());
+				entry.setGreen(colorNode.getAsJsonObject("green").getAsFloat());
 			if (colorNode.has("blue"))
-				entry.setRed(colorNode.getAsJsonObject("blue").getAsFloat());
+				entry.setBlue(colorNode.getAsJsonObject("blue").getAsFloat());
 			if (colorNode.has("alpha"))
-				entry.setRed(colorNode.getAsJsonObject("alpha").getAsFloat());
+				entry.setAlpha(colorNode.getAsJsonObject("alpha").getAsFloat());
 		}
 
 		return entry;
@@ -129,6 +131,8 @@ public class DevRenderEventHandler
 		{
 			e.printStackTrace();
 		}
+
+		sendUpdatePacket(username);
 	}
 
 	public void refreshEntry(EntityPlayer player)
@@ -184,6 +188,32 @@ public class DevRenderEventHandler
 		}
 	}
 
+	protected void sendUpdatePacket(String username)
+	{
+		PacketCustom packet = new PacketCustom(UCSPH.CHANNEL, UCSPH.UPDATE_DEV_RENDER);
+		DevRenderEntry entry = renderEntries.get(username);
+		packet.writeString(username);
+		packet.writeFloat(entry.red);
+		packet.writeFloat(entry.green);
+		packet.writeFloat(entry.blue);
+		packet.writeFloat(entry.alpha);
+		packet.writeBoolean(entry.renderUpsideDown);
+		packet.sendToServer();
+	}
+
+	public void handleUpdatePacket(PacketCustom packet)
+	{
+		String username = packet.readString();
+		DevRenderEntry entry = renderEntries.get(username);
+		entry.setRed(packet.readFloat());
+		entry.setGreen(packet.readFloat());
+		entry.setBlue(packet.readFloat());
+		entry.setAlpha(packet.readFloat());
+		entry.setRenderUpsideDown(packet.readBoolean());
+		renderEntries.remove(username);
+		renderEntries.put(username, entry);
+	}
+
 	public static class DevRenderEntry
 	{
 		protected float red = 1.0F;
@@ -197,17 +227,17 @@ public class DevRenderEventHandler
 			this.red = check(red);
 		}
 
-		public void setGreen(int green)
+		public void setGreen(float green)
 		{
 			this.green = check(green);
 		}
 
-		public void setBlue(int blue)
+		public void setBlue(float blue)
 		{
 			this.blue = check(blue);
 		}
 
-		public void setAlpha(int alpha)
+		public void setAlpha(float alpha)
 		{
 			this.alpha = check(alpha);
 		}

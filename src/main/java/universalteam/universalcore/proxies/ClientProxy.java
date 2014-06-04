@@ -1,9 +1,12 @@
 package universalteam.universalcore.proxies;
 
+import codechicken.lib.packet.PacketCustom;
 import net.minecraftforge.common.MinecraftForge;
 import universalteam.universalcore.client.CapeEventHandler;
 import universalteam.universalcore.client.DevRenderEventHandler;
 import universalteam.universalcore.compat.UCPluginListener;
+import universalteam.universalcore.network.UCCPH;
+import universalteam.universalcore.network.UCSPH;
 
 public class ClientProxy extends CommonProxy
 {
@@ -19,6 +22,8 @@ public class ClientProxy extends CommonProxy
 	public void init()
 	{
 		super.init();
+
+		PacketCustom.assignHandler(UCCPH.CHANNEL, new UCCPH());
 
 		UCPluginListener.handleClient();
 	}

@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import cpw.mods.fml.common.FMLLog;
+import net.minecraft.entity.player.EntityPlayer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 public class DevRenderEventHandler
 {
-	protected final String serverLocation = "";
+	protected final String serverLocation = "https://dl.dropboxusercontent.com/u/169269665/UniversalTeam/devRender/devRender.txt";
 	protected final int timeout = 1000;
 
 	public Map<String, String> links = Maps.newHashMap();
@@ -53,7 +54,7 @@ public class DevRenderEventHandler
 						String nick = str.substring(0, str.indexOf(":"));
 						String link = str.substring(str.indexOf(":") + 1);
 						links.put(nick, link);
-						renderEntries.put(nick, readFile(io));
+						readFile(nick, link);
 					}
 					else
 						FMLLog.warning("[UniversalCore] devRender.txt: Syntax error on line: " + linetracker + ": " + str);
@@ -69,7 +70,17 @@ public class DevRenderEventHandler
 		}
 	}
 
-	public DevRenderEntry readFile(InputStream stream) throws IOException
+	public void readFile(String name, String link) throws Exception
+	{
+		URL url = new URL(link);
+		URLConnection con = url.openConnection();
+		con.setConnectTimeout(timeout);
+		con.setReadTimeout(timeout);
+		InputStream io = con.getInputStream();
+		renderEntries.put(name, readJson(io));
+	}
+
+	public DevRenderEntry readJson(InputStream stream) throws IOException
 	{
 		DevRenderEntry entry = new DevRenderEntry();
 		InputStreamReader reader = new InputStreamReader(stream);
@@ -92,6 +103,46 @@ public class DevRenderEventHandler
 		}
 
 		return entry;
+	}
+
+	protected void updateEntry(String username)
+	{
+		if (!links.containsKey(username) || !renderEntries.containsKey(username))
+			return;
+
+		try
+		{
+			URL url = new URL(links.get(username));
+			URLConnection con = url.openConnection();
+			con.setConnectTimeout(timeout);
+			con.setReadTimeout(timeout);
+			InputStream io = con.getInputStream();
+			renderEntries.remove(username);
+			renderEntries.put(username, readJson(io));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public void refreshEntry(EntityPlayer player)
+	{
+		refreshEntry(player.getCommandSenderName());
+	}
+
+	public void refreshEntry(String username)
+	{
+		if (username == null)
+			for (String alt : renderEntries.keySet())
+				updateEntry(alt);
+
+		updateEntry(username);
+	}
+
+	public void refreshEntries()
+	{
+		refreshEntry((String) null);
 	}
 
 	public static class DevRenderEntry

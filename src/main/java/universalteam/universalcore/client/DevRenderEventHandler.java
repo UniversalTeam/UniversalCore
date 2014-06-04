@@ -159,7 +159,7 @@ public class DevRenderEventHandler
 	}
 
 	@SubscribeEvent
-	public void onPlayerRender(RenderLivingEvent.Pre event)
+	public void onPlayerRenderPre(RenderLivingEvent.Pre event)
 	{
 		String username = EnumChatFormatting.getTextWithoutFormattingCodes(event.entity.getCommandSenderName());
 
@@ -179,7 +179,7 @@ public class DevRenderEventHandler
 	}
 
 	@SubscribeEvent
-	public void onPlayerRender(RenderLivingEvent.Post event)
+	public void onPlayerRenderPost(RenderLivingEvent.Post event)
 	{
 		if (this.resetRender)
 		{
@@ -193,11 +193,11 @@ public class DevRenderEventHandler
 		PacketCustom packet = new PacketCustom(UCSPH.CHANNEL, UCSPH.UPDATE_DEV_RENDER);
 		DevRenderEntry entry = renderEntries.get(username);
 		packet.writeString(username);
-		packet.writeFloat(entry.red);
-		packet.writeFloat(entry.green);
-		packet.writeFloat(entry.blue);
-		packet.writeFloat(entry.alpha);
-		packet.writeBoolean(entry.renderUpsideDown);
+		packet.writeFloat(entry.getRed());
+		packet.writeFloat(entry.getGreen());
+		packet.writeFloat(entry.getBlue());
+		packet.writeFloat(entry.getAlpha());
+		packet.writeBoolean(entry.isRenderUpsideDown());
 		packet.sendToServer();
 	}
 

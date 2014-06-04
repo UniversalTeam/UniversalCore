@@ -5,7 +5,11 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import org.lwjgl.opengl.GL11;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,6 +26,7 @@ public class DevRenderEventHandler
 
 	public Map<String, String> links = Maps.newHashMap();
 	public Map<String, DevRenderEntry> renderEntries = Maps.newHashMap();
+	public boolean resetRender = false;
 
 	public static DevRenderEventHandler instance;
 
@@ -147,6 +152,36 @@ public class DevRenderEventHandler
 	public void refreshEntries()
 	{
 		refreshEntry((String) null);
+	}
+
+	@SubscribeEvent
+	public void onPlayerRender(RenderLivingEvent.Pre event)
+	{
+		String username = EnumChatFormatting.getTextWithoutFormattingCodes(event.entity.getCommandSenderName());
+
+		if (renderEntries.containsKey(username))
+		{
+			DevRenderEntry entry = renderEntries.get(username);
+			GL11.glColor4f(entry.red, entry.green, entry.blue, entry.alpha);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			if (entry.renderUpsideDown)
+			{
+				GL11.glTranslatef(0.0F, event.entity.height + 0.1F, 0.0F);
+				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+			}
+			this.resetRender = true;
+		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerRender(RenderLivingEvent.Post event)
+	{
+		if (this.resetRender)
+		{
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glDisable(GL11.GL_BLEND);
+		}
 	}
 
 	public static class DevRenderEntry

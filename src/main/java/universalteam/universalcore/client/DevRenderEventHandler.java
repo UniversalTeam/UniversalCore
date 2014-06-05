@@ -10,6 +10,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import org.lwjgl.opengl.GL11;
 import universalteam.universalcore.network.UCSPH;
 
@@ -158,6 +159,13 @@ public class DevRenderEventHandler
 		refreshEntry((String) null);
 	}
 
+	public void rebuildLinks()
+	{
+		links.clear();
+		renderEntries.clear();
+		buildFileDatabase();
+	}
+
 	@SubscribeEvent
 	public void onPlayerRenderPre(RenderLivingEvent.Pre event)
 	{
@@ -186,6 +194,16 @@ public class DevRenderEventHandler
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glDisable(GL11.GL_BLEND);
 		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerJoin(EntityJoinWorldEvent event)
+	{
+		if (!(event.entity instanceof EntityPlayer))
+			return;
+
+		EntityPlayer player = (EntityPlayer) event.entity;
+		sendUpdatePacket(EnumChatFormatting.getTextWithoutFormattingCodes(player.getCommandSenderName()));
 	}
 
 	protected void sendUpdatePacket(String username)

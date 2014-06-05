@@ -30,7 +30,7 @@ public class UCCommand extends CommandBase
 	@Override
 	public String getCommandUsage(ICommandSender sender)
 	{
-		return "[updateCapes|updateDevRender] <username|all>";
+		return "[updateCapes|updateDevRender|rebuildDevRenderLinks] <username|all>";
 	}
 
 	@Override
@@ -45,6 +45,8 @@ public class UCCommand extends CommandBase
 				updateDevRender(sender.getCommandSenderName(), args);
 			else if (args[0].equalsIgnoreCase("updateCapes"))
 				updateCapes(sender.getCommandSenderName(), args);
+			else if (args[0].equalsIgnoreCase("rebuildDevRenderCapes"))
+				rebuildDevRenderCapes();
 		}
 		else
 			throw new SyntaxErrorException(getCommandUsage(sender));
@@ -70,7 +72,11 @@ public class UCCommand extends CommandBase
 			if (target != null)
 				DevRenderEventHandler.instance.refreshEntry(target);
 		}
+	}
 
+	protected void rebuildDevRenderCapes()
+	{
+		DevRenderEventHandler.instance.rebuildLinks();
 	}
 
 	@Override
@@ -79,6 +85,6 @@ public class UCCommand extends CommandBase
 		List<String> players = Lists.newArrayList(ServerUtil.getAllPlayers_list());
 		players.add("all");
 		String[] names = new String[players.size()];
-		return args.length == 1 ? getListOfStringsMatchingLastWord(args, "updateCapes", "updateDevRender") : args.length == 2 ? getListOfStringsMatchingLastWord(args, players.toArray(names)) : null;
+		return args.length == 1 ? getListOfStringsMatchingLastWord(args, "updateCapes", "updateDevRender", "rebuildDevRenderLinks") : args.length == 2 ? getListOfStringsMatchingLastWord(args, players.toArray(names)) : null;
 	}
 }

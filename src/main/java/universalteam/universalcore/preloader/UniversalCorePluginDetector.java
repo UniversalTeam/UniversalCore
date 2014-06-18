@@ -6,6 +6,8 @@ import com.google.common.collect.Multimap;
 import universalteam.universalcore.api.compat.IPluginListener;
 import universalteam.universalcore.api.compat.UCPlugin;
 
+import static universalteam.universalcore.preloader.UniversalCoreLoadingPlugin.preLogger;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +46,7 @@ public class UniversalCorePluginDetector
 
 				UCPlugin plugin = clazz.getAnnotation(UCPlugin.class);
 				plugins.put(plugin.targetID(), clazz);
+				preLogger.info("Found new plugin listener for: %s at %s", plugin.targetID(), clazz.getName());
 			}
 		}
 		catch (Exception e)

@@ -4,6 +4,8 @@ import codechicken.core.launch.DepLoader;
 import cpw.mods.fml.relauncher.FMLInjectionData;
 import cpw.mods.fml.relauncher.IFMLCallHook;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import universalteam.universalcore.libs.ReferenceCore;
+import universalteam.universalcore.utils.UCLogger;
 
 import java.io.File;
 import java.util.Map;
@@ -15,6 +17,8 @@ public class UniversalCoreLoadingPlugin implements IFMLLoadingPlugin, IFMLCallHo
 {
 	public File mcDir;
 	public String mcVersion;
+
+	public static UCLogger preLogger = new UCLogger(ReferenceCore.MODID).setSubName("preloader");
 
 	public UniversalCoreLoadingPlugin()
 	{
@@ -106,7 +110,10 @@ public class UniversalCoreLoadingPlugin implements IFMLLoadingPlugin, IFMLCallHo
 
 				String mapFile = attr.getValue("UCAccessTransformer");
 				if (mapFile != null)
+				{
+					preLogger.info("Found new new UCAccessTransformer: %s", mapFile);
 					UniversalCoreAccessTransformer.addTransformerMap(mapFile);
+				}
 
 				String pluginListener = attr.getValue("UCPluginListener");
 				if (pluginListener != null)
@@ -114,6 +121,7 @@ public class UniversalCoreLoadingPlugin implements IFMLLoadingPlugin, IFMLCallHo
 					try
 					{
 						UniversalCorePluginDetector.registerPluginListener(Class.forName(pluginListener));
+						preLogger.info("Found new UCPluginListener: %S", pluginListener);
 					}
 					catch (Exception e)
 					{

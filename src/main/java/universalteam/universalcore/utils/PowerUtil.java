@@ -8,7 +8,7 @@ package universalteam.universalcore.utils;
  * This can be deleted someday;
  */
 
-public class PowerHelper
+public class PowerUtil
 {
 	public final int MJ_TO_PV = 3;  // Ratio of MJ To PV (BuildCraft)
 	public final int EU_TO_PV = 7;  // Ratio of EU To PV (IndustrialCraft)

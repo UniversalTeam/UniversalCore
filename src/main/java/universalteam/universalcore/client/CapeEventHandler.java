@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import universalteam.universalcore.libs.environment.EnvironmentChecks;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,12 +39,11 @@ public class CapeEventHandler
 	}
 
 	@SubscribeEvent
-	public void onPreRenderSpecials (RenderPlayerEvent.Specials.Pre event)
+	public void onPreRenderSpecials(RenderPlayerEvent.Specials.Pre event)
 	{
-		if (Loader.isModLoaded("shadersmod"))
-		{
+		if (Loader.isModLoaded("shadersmod") || EnvironmentChecks.hasOptifine)
 			return;
-		}
+
 		if (event.entityPlayer instanceof AbstractClientPlayer)
 		{
 			AbstractClientPlayer abstractClientPlayer = (AbstractClientPlayer) event.entityPlayer;
@@ -66,7 +66,7 @@ public class CapeEventHandler
 		}
 	}
 
-	public void buildCloakURLDatabase ()
+	public void buildCloakURLDatabase()
 	{
 		URL url;
 		try
@@ -118,7 +118,7 @@ public class CapeEventHandler
 		}
 
 		@Override
-		public void run ()
+		public void run()
 		{
 			try
 			{
@@ -144,7 +144,7 @@ public class CapeEventHandler
 		}
 
 		@Override
-		public void run ()
+		public void run()
 		{
 			try
 			{
@@ -157,7 +157,7 @@ public class CapeEventHandler
 		}
 	}
 
-	public void refreshCapes ()
+	public void refreshCapes()
 	{
 		cloaks.clear();
 		capePlayers.clear();

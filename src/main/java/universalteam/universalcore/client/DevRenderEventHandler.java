@@ -6,12 +6,14 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import org.lwjgl.opengl.GL11;
+import universalteam.universalcore.libs.environment.EnvironmentChecks;
 import universalteam.universalcore.network.UCSPH;
 
 import java.io.BufferedReader;
@@ -169,6 +171,9 @@ public class DevRenderEventHandler
 	@SubscribeEvent
 	public void onPlayerRenderPre(RenderLivingEvent.Pre event)
 	{
+		if (Loader.isModLoaded("shadermod") || EnvironmentChecks.hasOptifine)
+			return;
+
 		String username = EnumChatFormatting.getTextWithoutFormattingCodes(event.entity.getCommandSenderName());
 
 		if (renderEntries.containsKey(username))

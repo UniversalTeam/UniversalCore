@@ -1,22 +1,26 @@
 package universalteam.universalcore.utils.inventory;
 
+import codechicken.lib.packet.PacketCustom;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.Constants;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static universalteam.universalcore.UniversalCore.logger;
 
 public class InventorySimple implements IInventory
 {
 	protected ItemStack[] items;
+	protected int size;
 	protected String name;
 	protected int stackLimit;
 	protected String customName;
@@ -30,8 +34,9 @@ public class InventorySimple implements IInventory
 
 	public InventorySimple(String name, int size, int stackLimit)
 	{
-		this.items = new ItemStack[size];
 		this.name = name;
+		this.size = size;
+		this.items = new ItemStack[size];
 		this.stackLimit = stackLimit;
 	}
 
@@ -75,7 +80,7 @@ public class InventorySimple implements IInventory
 	@Override
 	public int getSizeInventory()
 	{
-		return items.length;
+		return size;
 	}
 
 	@Override
@@ -217,6 +222,14 @@ public class InventorySimple implements IInventory
 			logger.severe("Inventory: %s tried to add an item(s) to a whiteList while the whiteList wasn't enabled, the item will not be registered!", this.name);
 	}
 
+	public void addToWhiteList(int slot, ItemStack... stacks)
+	{
+		if (this.useWhiteList)
+			whiteList.putAll(slot, Arrays.asList(stacks));
+		else
+			logger.severe("Inventory: %s tried to add an item(s) to a whiteList while the whiteList wasn't enabled, the item will not be registered!", this.name);
+	}
+
 	public void addToBlackList(int slot, ItemStack stack)
 	{
 		if (this.useBlackList)
@@ -231,5 +244,56 @@ public class InventorySimple implements IInventory
 			blackList.putAll(slot, stacks);
 		else
 			logger.severe("Inventory: %s tried to add an item(s) to a blackList while the blackList wasn't enabled, the item will not be registered!", this.name);
+	}
+
+	public void addToBlackList(int slot, ItemStack... stacks)
+	{
+		if (this.useBlackList)
+			blackList.putAll(slot, Arrays.asList(stacks));
+		else
+			logger.severe("Inventory: %s tried to add an item(s) to a blackList while the blackList wasn't enabled, the item will not be registered!", this.name);
+	}
+
+	public void writeToNBT(NBTTagCompound compound)
+	{
+		NBTTagList contents = new NBTTagList();
+
+		for (int i = 0; i < getSizeInventory(); ++i)
+		{
+			if (items[i] != null)
+			{
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setInteger("Slot", i);
+				items[i].writeToNBT(tag);
+				contents.appendTag(tag);
+			}
+		}
+
+		compound.setTag("Items", contents);
+	}
+
+	public void readFromNBT(NBTTagCompound compound)
+	{
+		NBTTagList contents = compound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
+		items = new ItemStack[size];
+
+		for (int i = 0; i < contents.tagCount(); ++i)
+		{
+			NBTTagCompound tag = contents.getCompoundTagAt(i);
+			int slot = tag.getInteger("Slot");
+
+			if (slot <= 0 && slot < getSizeInventory())
+				items[slot] = ItemStack.loadItemStackFromNBT(tag);
+		}
+	}
+
+	public void writeToPacket(PacketCustom packet)
+	{
+		packet.writeString(customName);
+	}
+
+	public void readFromPacket(PacketCustom packet)
+	{
+		this.customName = packet.readString();
 	}
 }

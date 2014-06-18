@@ -2,6 +2,7 @@ package universalteam.universalcore.tile;
 
 import codechicken.lib.packet.ICustomPacketTile;
 import codechicken.lib.packet.PacketCustom;
+import cpw.mods.fml.common.Loader;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,8 +25,6 @@ abstract public class TileAdvanced extends TileEntity implements ICustomPacketTi
 	public abstract boolean activate(EntityPlayer player, int side, ItemStack stack);
 
 	public abstract void click(EntityPlayer player, ItemStack stack);
-
-	public abstract String getChannelName();
 
 	@Override
 	public void writeToNBT(NBTTagCompound compound)
@@ -53,5 +52,10 @@ abstract public class TileAdvanced extends TileEntity implements ICustomPacketTi
 	public void handleDescriptionPacket(PacketCustom packet)
 	{
 		readDesc(packet);
+	}
+
+	public String getChannelName()
+	{
+		return Loader.instance().activeModContainer().getModId();
 	}
 }

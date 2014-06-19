@@ -156,15 +156,15 @@ public class UCLogger
 	{
 		debug(String.format(s, obj));
 	}
-}
 
-
-class CustomLevel extends Level
-{
-	public static final Level DEBUG = new CustomLevel("DEBUG", Level.ALL.intValue() + 1);
-
-	public CustomLevel(String name, int value)
+	public static class CustomLevel extends Level
 	{
-		super(name, value);
+		public static final Level DEBUG = new CustomLevel("DEBUG", Level.ALL.intValue() + 1);
+
+		public CustomLevel(String name, int value)
+		{
+			super(name, value);
+		}
+
 	}
 }

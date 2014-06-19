@@ -5,7 +5,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +22,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
+
+import static universalteam.universalcore.UniversalCore.logger;
 
 public class DevRenderEventHandler
 {
@@ -67,7 +68,7 @@ public class DevRenderEventHandler
 						readFile(nick, link);
 					}
 					else
-						FMLLog.warning("[UniversalCore] devRender.txt: Syntax error on line: " + linetracker + ": " + str);
+						logger.warning("[UniversalCore] devRender.txt: Syntax error on line: %d: %S", linetracker, str);
 				}
 				linetracker++;
 			}
@@ -98,7 +99,6 @@ public class DevRenderEventHandler
 
 		if (node.has("renderUpsideDown"))
 			entry.setRenderUpsideDown(node.get("renderUpsideDown").getAsBoolean());
-
 		if (node.has("color"))
 		{
 			JsonObject colorNode = node.getAsJsonObject("color");
@@ -182,7 +182,7 @@ public class DevRenderEventHandler
 			GL11.glColor4f(entry.red, entry.green, entry.blue, entry.alpha);
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			if (entry.renderUpsideDown)
+			if (entry.renderUpsideDown())
 			{
 				GL11.glTranslatef(0.0F, event.entity.height + 0.1F, 0.0F);
 				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
@@ -220,7 +220,7 @@ public class DevRenderEventHandler
 		packet.writeFloat(entry.getGreen());
 		packet.writeFloat(entry.getBlue());
 		packet.writeFloat(entry.getAlpha());
-		packet.writeBoolean(entry.isRenderUpsideDown());
+		packet.writeBoolean(entry.renderUpsideDown());
 		packet.sendToServer();
 	}
 
@@ -239,11 +239,11 @@ public class DevRenderEventHandler
 
 	public static class DevRenderEntry
 	{
-		protected float red = 1.0F;
-		protected float green = 1.0F;
-		protected float blue = 1.0F;
-		protected float alpha = 1.0F;
-		protected boolean renderUpsideDown = false;
+		float red = 1.0F;
+		float green = 1.0F;
+		float blue = 1.0F;
+		float alpha = 1.0F;
+		boolean renderUpsideDown = false;
 
 		public void setRed(float red)
 		{
@@ -290,7 +290,7 @@ public class DevRenderEventHandler
 			return alpha;
 		}
 
-		public boolean isRenderUpsideDown()
+		public boolean renderUpsideDown()
 		{
 			return renderUpsideDown;
 		}

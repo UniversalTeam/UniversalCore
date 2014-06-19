@@ -19,6 +19,8 @@ public class UCCPH implements IClientPacketHandler
 	{
 		switch (packet.getType())
 		{
+			case TILE_PACKET:
+				break; //TODO: implement
 			case UPDATE_DEV_RENDER:
 				DevRenderEventHandler.instance.handleUpdatePacket(packet);
 		}

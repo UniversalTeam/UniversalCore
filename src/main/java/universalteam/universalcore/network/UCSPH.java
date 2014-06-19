@@ -18,6 +18,8 @@ public class UCSPH implements IServerPacketHandler
 	{
 		switch (packet.getType())
 		{
+			case TILE_PACKET:
+				break; //TODO: implement
 			case UPDATE_DEV_RENDER:
 				resendDevRenderPacket(packet);
 		}

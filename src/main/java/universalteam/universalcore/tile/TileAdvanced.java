@@ -2,16 +2,20 @@ package universalteam.universalcore.tile;
 
 import codechicken.lib.packet.ICustomPacketTile;
 import codechicken.lib.packet.PacketCustom;
-import cpw.mods.fml.common.Loader;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.ArrayList;
+import java.util.List;
 
 abstract public class TileAdvanced extends TileEntity implements ICustomPacketTile
 {
+	private boolean isRedstonePowered;
+	private int ticker;
+
 	public abstract void save(NBTTagCompound compound);
 
 	public abstract void load(NBTTagCompound compound);
@@ -20,16 +24,13 @@ abstract public class TileAdvanced extends TileEntity implements ICustomPacketTi
 
 	public abstract void readDesc(PacketCustom packet);
 
-	public abstract void onPlaced(EntityLivingBase entity, ItemStack stack);
-
-	public abstract boolean activate(EntityPlayer player, int side, ItemStack stack);
-
-	public abstract void click(EntityPlayer player, ItemStack stack);
+	public abstract String getChannelName();
 
 	@Override
 	public void writeToNBT(NBTTagCompound compound)
 	{
 		super.writeToNBT(compound);
+		isRedstonePowered = compound.getBoolean("IsRedstonePowered");
 		save(compound);
 	}
 
@@ -37,6 +38,7 @@ abstract public class TileAdvanced extends TileEntity implements ICustomPacketTi
 	public void readFromNBT(NBTTagCompound compound)
 	{
 		super.readFromNBT(compound);
+		compound.setBoolean("IsRedstonePowered", isRedstonePowered);
 		load(compound);
 	}
 
@@ -54,8 +56,58 @@ abstract public class TileAdvanced extends TileEntity implements ICustomPacketTi
 		readDesc(packet);
 	}
 
-	public String getChannelName()
+	@Override
+	public void updateEntity()
 	{
-		return Loader.instance().activeModContainer().getModId();
+		if (ticker == 0)
+			onTileLoaded();
+
+		super.updateEntity();
+		ticker++;
+	}
+
+	protected void onTileLoaded()
+	{
+		onBlockNeighbourChanged();
+	}
+
+	public void onBlockNeighbourChanged()
+	{
+		checkRedstonePower();
+	}
+
+	public void checkRedstonePower()
+	{
+		boolean isIndirectlyPowered = getWorldObj().isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+
+		if (isIndirectlyPowered && !getIsRedstonePowered())
+			redstoneChanged(true);
+		else if (getIsRedstonePowered() && !isIndirectlyPowered)
+			redstoneChanged(false);
+	}
+
+	protected void redstoneChanged(boolean newValue)
+	{
+		isRedstonePowered = newValue;
+	}
+
+	public boolean getIsRedstonePowered()
+	{
+		return isRedstonePowered;
+	}
+
+	public int getTicker()
+	{
+		return ticker;
+	}
+
+	public List<ItemStack> getDrops()
+	{
+		return new ArrayList<ItemStack>();
+	}
+
+	public ForgeDirection getOrientation()
+	{
+		return ForgeDirection.getOrientation(getBlockMetadata());
 	}
 }

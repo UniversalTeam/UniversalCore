@@ -12,6 +12,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import universalteam.universalcore.client.render.block.BlockAdvancedRenderingHandler;
 import universalteam.universalcore.tile.TileAdvanced;
 import universalteam.universalcore.tile.implement.IActivateAware;
 import universalteam.universalcore.tile.implement.IBreakAware;
@@ -88,6 +89,22 @@ abstract public class BlockAdvanced extends Block
 	@Override
 	public TileEntity createTileEntity(World world, int meta)
 	{
+		return createTile();
+	}
+
+	public TileEntity getTileForRendering()
+	{
+		TileEntity tile = createTile();
+		tile.blockType = this;
+		tile.blockMetadata = 0;
+		return tile;
+	}
+
+	public TileEntity createTile()
+	{
+		if (tileClass == null)
+			return null;
+
 		try
 		{
 			return tileClass.newInstance();
@@ -140,6 +157,12 @@ abstract public class BlockAdvanced extends Block
 	public boolean renderAsNormalBlock()
 	{
 		return isOpaqueCube();
+	}
+
+	@Override
+	public int getRenderType()
+	{
+		return rotateSideIcons() ? BlockAdvancedRenderingHandler.RENDER_ID : 0;
 	}
 
 	@Override

@@ -1,9 +1,11 @@
 package universalteam.universalcore.proxies;
 
 import codechicken.lib.packet.PacketCustom;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import universalteam.universalcore.client.CapeEventHandler;
 import universalteam.universalcore.client.DevRenderEventHandler;
+import universalteam.universalcore.client.render.block.BlockAdvancedRenderingHandler;
 import universalteam.universalcore.compat.UCPluginListener;
 import universalteam.universalcore.network.UCCPH;
 import universalteam.universalcore.network.UCSPH;
@@ -44,5 +46,10 @@ public class ClientProxy extends CommonProxy
 	{
 		MinecraftForge.EVENT_BUS.register(new CapeEventHandler());
 		MinecraftForge.EVENT_BUS.register(new DevRenderEventHandler());
+	}
+
+	public void initISBRHs()
+	{
+		RenderingRegistry.registerBlockHandler(BlockAdvancedRenderingHandler.RENDER_ID, new BlockAdvancedRenderingHandler());
 	}
 }

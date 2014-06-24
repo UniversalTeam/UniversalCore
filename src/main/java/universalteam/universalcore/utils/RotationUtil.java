@@ -25,7 +25,7 @@ public class RotationUtil
 		}
 	}
 
-	public static ForgeDirection get6SideOrientation(EntityLivingBase entity)
+	public static ForgeDirection get6SidedOrientation(EntityLivingBase entity)
 	{
 		if (entity.rotationPitch < -45.5F)
 			return ForgeDirection.UP;

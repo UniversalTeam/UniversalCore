@@ -3,10 +3,13 @@ package universalteam.universalcore.block;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import universalteam.universalcore.tile.TileAdvanced;
@@ -29,12 +32,15 @@ abstract public class BlockAdvanced extends Block
 	protected Class<? extends TileEntity> tileClass = null;
 	protected String modID;
 	protected int guiID = -1;
+	protected String blockName;
+	public IIcon[] icons = new IIcon[6];
 
 	protected BlockAdvanced(Material material)
 	{
 		super(material);
 		this.tileClass = getAdvancedTile();
 		this.modID = getModID();
+		this.blockName = blockName;
 	}
 
 	protected BlockAdvanced setBlockRotation(BlockRotation blockRotation)
@@ -46,6 +52,12 @@ abstract public class BlockAdvanced extends Block
 	protected BlockAdvanced setInventoryRenderDirection(ForgeDirection inventoryRenderDirection)
 	{
 		this.inventoryRenderDirection = inventoryRenderDirection;
+		return this;
+	}
+
+	protected BlockAdvanced setDefaultIcon(IIcon icon)
+	{
+		this.blockIcon = icon;
 		return this;
 	}
 
@@ -62,6 +74,8 @@ abstract public class BlockAdvanced extends Block
 	public abstract String getModID();
 
 	public abstract Object getModInstace();
+
+	public abstract String getBlockName();
 
 	public abstract Class<? extends TileAdvanced> getAdvancedTile();
 
@@ -85,6 +99,50 @@ abstract public class BlockAdvanced extends Block
 	}
 
 	@Override
+	public void registerBlockIcons(IIconRegister register)
+	{
+		this.blockIcon = register.registerIcon(modID + ":" + blockName);
+	}
+
+	public void setIcon(IIcon icon, ForgeDirection... dirs)
+	{
+		for (ForgeDirection dir : dirs)
+			icons[dir.ordinal()] = icon;
+	}
+
+	public IIcon getUnmodifiedIcon(ForgeDirection dir)
+	{
+		if (dir != ForgeDirection.UNKNOWN)
+			if (icons[dir.ordinal()] != null)
+				return icons[dir.ordinal()];
+
+		return blockIcon;
+	}
+
+	public IIcon getUnmodifiedIcon(ForgeDirection dir, IBlockAccess world, int x, int y, int z)
+	{
+		return getUnmodifiedIcon(dir);
+	}
+
+	@Override
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side)
+	{
+		return getUnmodifiedIcon(rotateSideByMetadata(side, world.getBlockMetadata(x, y, z)), world, x, y, z);
+	}
+
+	@Override
+	public IIcon getIcon(int side, int meta)
+	{
+		return getUnmodifiedIcon(rotateSideByMetadata(side, meta));
+	}
+
+	@Override
+	public boolean renderAsNormalBlock()
+	{
+		return isOpaqueCube();
+	}
+
+	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
 	{
 		int meta;
@@ -95,7 +153,7 @@ abstract public class BlockAdvanced extends Block
 				meta = RotationUtil.get4SidedOrientation(entity).ordinal();
 				break;
 			case SIX_DIRECTIONS:
-				meta = RotationUtil.get6SideOrientation(entity).ordinal();
+				meta = RotationUtil.get6SidedOrientation(entity).ordinal();
 				break;
 			default:
 				meta = 0;
@@ -193,9 +251,63 @@ abstract public class BlockAdvanced extends Block
 		player.openGui(getModInstace(), guiID, world, x, y, z);
 	}
 
-	public boolean rotateSideIcons(int meta)
+	public boolean rotateSideIcons()
 	{
 		return false;
+	}
+
+	//Credits to OpenModsLib
+	public ForgeDirection rotateSideByMetadata(int side, int metadata)
+	{
+		ForgeDirection rotation = ForgeDirection.getOrientation(metadata);
+		ForgeDirection dir = ForgeDirection.getOrientation(side);
+
+		switch (getBlockRotation())
+		{
+			case FOUR_DIRECTIONS:
+			case NONE:
+				switch (rotation)
+				{
+					case EAST:
+						dir = dir.getRotation(ForgeDirection.DOWN);
+						break;
+					case SOUTH:
+						dir = dir.getRotation(ForgeDirection.UP);
+						dir = dir.getRotation(ForgeDirection.UP);
+						break;
+					case WEST:
+						dir = dir.getRotation(ForgeDirection.UP);
+						break;
+					default:
+						break;
+				}
+				return dir;
+			default:
+				switch (rotation)
+				{
+					case DOWN:
+						dir = dir.getRotation(ForgeDirection.SOUTH);
+						dir = dir.getRotation(ForgeDirection.SOUTH);
+						break;
+					case EAST:
+						dir = dir.getRotation(ForgeDirection.NORTH);
+						break;
+					case NORTH:
+						dir = dir.getRotation(ForgeDirection.WEST);
+						break;
+					case SOUTH:
+						dir = dir.getRotation(ForgeDirection.EAST);
+						break;
+					case WEST:
+						dir = dir.getRotation(ForgeDirection.SOUTH);
+						break;
+					default:
+						break;
+
+				}
+		}
+
+		return dir;
 	}
 
 	public TileAdvanced getTile(World world, int x, int y, int z)

@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer
 
 trait TInventoryTile extends IInventory
 {
-    var inventory: InventorySimple = createInventory
+    lazy val inventory: InventorySimple = createInventory
 
     def createInventory: InventorySimple
 

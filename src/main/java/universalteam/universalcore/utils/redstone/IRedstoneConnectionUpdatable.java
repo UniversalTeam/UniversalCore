@@ -1,6 +1,6 @@
 package universalteam.universalcore.utils.redstone;
 
-public interface IRedstoneConnectionUpdator
+public interface IRedstoneConnectionUpdatable
 {
 	public void notifyUpdate();
 }

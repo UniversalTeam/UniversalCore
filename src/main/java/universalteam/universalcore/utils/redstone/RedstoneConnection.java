@@ -4,25 +4,25 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class RedstoneConnection
 {
-	private IRedstoneConnectionUpdator device;
+	private IRedstoneConnectionUpdatable device;
 	private String id = "";
 	private boolean isInput = true;
 	private boolean isEnabled = false;
 	private int power = 0;
 
-	public RedstoneConnection(IRedstoneConnectionUpdator device, String id)
+	public RedstoneConnection(IRedstoneConnectionUpdatable device, String id)
 	{
 		this.device = device;
 		this.id = id;
 	}
 
-	public RedstoneConnection(IRedstoneConnectionUpdator device, String id, boolean isInput)
+	public RedstoneConnection(IRedstoneConnectionUpdatable device, String id, boolean isInput)
 	{
 		this(device, id);
 		this.isInput = isInput;
 	}
 
-	public RedstoneConnection(IRedstoneConnectionUpdator device, String id, boolean isInput, boolean isEnabled)
+	public RedstoneConnection(IRedstoneConnectionUpdatable device, String id, boolean isInput, boolean isEnabled)
 	{
 		this(device, id, isInput);
 		this.isEnabled = isEnabled;

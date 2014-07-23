@@ -12,6 +12,7 @@ public class UCSPH implements IServerPacketHandler
 
 	public static final int TILE_PACKET = 1;
 	public static final int UPDATE_DEV_RENDER = 2;
+	public static final int UPDATE_DEV_RENDER_LINKS = 3;
 
 	@Override
 	public void handlePacket(PacketCustom packet, EntityPlayerMP player, INetHandlerPlayServer netHandler)
@@ -22,6 +23,10 @@ public class UCSPH implements IServerPacketHandler
 				break; //TODO: implement
 			case UPDATE_DEV_RENDER:
 				resendDevRenderPacket(packet);
+				break;
+			case UPDATE_DEV_RENDER_LINKS:
+				resendDevRenderLinksPacket(packet);
+				break;
 		}
 	}
 
@@ -35,5 +40,10 @@ public class UCSPH implements IServerPacketHandler
 		p.writeFloat(packet.readFloat());
 		p.writeBoolean(packet.readBoolean());
 		p.sendToClients();
+	}
+
+	protected void resendDevRenderLinksPacket(PacketCustom packet)
+	{
+		new PacketCustom(CHANNEL, UPDATE_DEV_RENDER_LINKS).sendToClients();
 	}
 }

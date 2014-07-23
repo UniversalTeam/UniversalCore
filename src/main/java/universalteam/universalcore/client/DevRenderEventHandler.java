@@ -7,6 +7,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -14,6 +17,9 @@ import org.lwjgl.opengl.GL11;
 import universalteam.universalcore.libs.environment.EnvironmentChecks;
 import universalteam.universalcore.network.UCSPH;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +35,8 @@ public class DevRenderEventHandler
 	protected final String serverLocation = "https://dl.dropboxusercontent.com/u/169269665/UniversalTeam/devRender/devRender.txt";
 	protected final int timeout = 1000;
 
+	private static final Graphics TEST_GRAPHICS = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB).getGraphics();
+
 	public Map<String, String> links = Maps.newHashMap();
 	public Map<String, DevRenderEntry> renderEntries = Maps.newHashMap();
 	public boolean resetRender = false;
@@ -37,11 +45,11 @@ public class DevRenderEventHandler
 
 	public DevRenderEventHandler()
 	{
-		buildFileDatabase();
+		buildEntryDatabase();
 		instance = this;
 	}
 
-	public void buildFileDatabase()
+	public void buildEntryDatabase()
 	{
 		URL url;
 		try
@@ -110,6 +118,8 @@ public class DevRenderEventHandler
 			if (colorNode.has("alpha"))
 				entry.setAlpha(colorNode.get("alpha").getAsFloat());
 		}
+		if (node.has("cape"))
+			entry.setCapeURL(node.get("cape").getAsString());
 
 		return entry;
 	}
@@ -164,7 +174,7 @@ public class DevRenderEventHandler
 	{
 		links.clear();
 		renderEntries.clear();
-		buildFileDatabase();
+		buildEntryDatabase();
 	}
 
 	@SubscribeEvent
@@ -182,7 +192,7 @@ public class DevRenderEventHandler
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			if (entry.renderUpsideDown())
-			{
+			{ //FIXME
 				GL11.glTranslatef(0.0F, event.entity.height + 0.1F, 0.0F);
 				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
 			}
@@ -198,6 +208,8 @@ public class DevRenderEventHandler
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glDisable(GL11.GL_BLEND);
 		}
+
+		//TODO redo the upside-down render
 	}
 
 	protected void sendUpdatePacket(String username)
@@ -210,6 +222,7 @@ public class DevRenderEventHandler
 		packet.writeFloat(entry.getBlue());
 		packet.writeFloat(entry.getAlpha());
 		packet.writeBoolean(entry.renderUpsideDown());
+		packet.writeString(entry.getCapeURL());
 		packet.sendToServer();
 	}
 
@@ -222,6 +235,7 @@ public class DevRenderEventHandler
 		entry.setBlue(packet.readFloat());
 		entry.setAlpha(packet.readFloat());
 		entry.setRenderUpsideDown(packet.readBoolean());
+		entry.setCapeURL(packet.readString());
 		renderEntries.remove(username);
 		renderEntries.put(username, entry);
 	}
@@ -233,6 +247,7 @@ public class DevRenderEventHandler
 		float blue = 1.0F;
 		float alpha = 1.0F;
 		boolean renderUpsideDown = false;
+		String capeURL = "";
 
 		public void setRed(float red)
 		{
@@ -257,6 +272,11 @@ public class DevRenderEventHandler
 		public void setRenderUpsideDown(boolean renderUpsideDown)
 		{
 			this.renderUpsideDown = renderUpsideDown;
+		}
+
+		public void setCapeURL(String capeURL)
+		{
+			this.capeURL = capeURL;
 		}
 
 		public float getRed()
@@ -284,6 +304,11 @@ public class DevRenderEventHandler
 			return renderUpsideDown;
 		}
 
+		public String getCapeURL()
+		{
+			return capeURL;
+		}
+
 		protected float check(float number)
 		{
 			if (number > 1.0F)
@@ -292,6 +317,58 @@ public class DevRenderEventHandler
 				number = 0.0F;
 
 			return number;
+		}
+	}
+
+	private class CloakThread implements Runnable
+	{
+
+		AbstractClientPlayer abstractClientPlayer;
+		String cloakURL;
+
+		public CloakThread(AbstractClientPlayer player, String cloak)
+		{
+			abstractClientPlayer = player;
+			cloakURL = cloak;
+		}
+
+		@Override
+		public void run()
+		{
+			try
+			{
+				Image cape = new ImageIcon(new URL(cloakURL)).getImage();
+				BufferedImage bo = new BufferedImage(cape.getWidth(null), cape.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+				bo.getGraphics().drawImage(cape, 0, 0, null);
+				ReflectionHelper.setPrivateValue(ThreadDownloadImageData.class, abstractClientPlayer.getTextureCape(), bo, "bufferedImage", "field_110560_d");
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private class CloakPreload implements Runnable
+	{
+		String cloakURL;
+
+		public CloakPreload(String link)
+		{
+			cloakURL = link;
+		}
+
+		@Override
+		public void run()
+		{
+			try
+			{
+				TEST_GRAPHICS.drawImage(new ImageIcon(new URL(cloakURL)).getImage(), 0, 0, null);
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 }

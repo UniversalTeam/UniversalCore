@@ -13,6 +13,7 @@ public class UCCPH implements IClientPacketHandler
 
 	public static final int TILE_PACKET = 1;
 	public static final int UPDATE_DEV_RENDER = 2;
+	public static final int UPDATE_DEV_RENDER_LINKS = 3;
 
 	@Override
 	public void handlePacket(PacketCustom packet, Minecraft mc, INetHandlerPlayClient netHandler)
@@ -23,6 +24,10 @@ public class UCCPH implements IClientPacketHandler
 				break; //TODO: implement
 			case UPDATE_DEV_RENDER:
 				DevRenderEventHandler.instance.handleUpdatePacket(packet);
+				break;
+			case UPDATE_DEV_RENDER_LINKS:
+				DevRenderEventHandler.instance.rebuildLinks();
+				break;
 		}
 	}
 }

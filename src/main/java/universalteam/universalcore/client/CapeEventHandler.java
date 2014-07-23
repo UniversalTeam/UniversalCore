@@ -21,6 +21,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Deprecated
 public class CapeEventHandler
 {
 	private final String serverLocation = "https://dl.dropboxusercontent.com/u/169269665/UniversalTeam/Capes/capes.txt";

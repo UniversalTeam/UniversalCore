@@ -1,5 +1,6 @@
 package universalteam.universalcore.command;
 
+import codechicken.lib.packet.PacketCustom;
 import com.google.common.collect.Lists;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -8,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityCommandBlock;
 import universalteam.universalcore.client.DevRenderEventHandler;
+import universalteam.universalcore.network.UCSPH;
 import universalteam.universalcore.utils.ServerUtil;
 
 import java.util.Arrays;
@@ -30,7 +32,7 @@ public class UCCommand extends CommandBase
 	@Override
 	public String getCommandUsage(ICommandSender sender)
 	{
-		return "[updateCapes|updateDevRender|rebuildDevRenderLinks] <username|all>";
+		return "[updateDevRender|rebuildLinks] <username|all>";
 	}
 
 	@Override
@@ -43,18 +45,11 @@ public class UCCommand extends CommandBase
 		{
 			if (args[0].equalsIgnoreCase("updateDevRender"))
 				updateDevRender(sender.getCommandSenderName(), args);
-			else if (args[0].equalsIgnoreCase("updateCapes"))
-				updateCapes(sender.getCommandSenderName(), args);
-			else if (args[0].equalsIgnoreCase("rebuildDevRenderCapes"))
-				rebuildDevRenderCapes();
+			else if (args[0].equalsIgnoreCase("rebuildLinks"))
+				rebuildLinks();
 		}
 		else
 			throw new SyntaxErrorException(getCommandUsage(sender));
-	}
-
-	protected void updateCapes(String name, String[] args)
-	{
-		//TODO: NO-OP
 	}
 
 	protected void updateDevRender(String name, String[] args)
@@ -74,9 +69,9 @@ public class UCCommand extends CommandBase
 		}
 	}
 
-	protected void rebuildDevRenderCapes()
+	protected void rebuildLinks()
 	{
-		DevRenderEventHandler.instance.rebuildLinks();
+		new PacketCustom(UCSPH.CHANNEL, UCSPH.UPDATE_DEV_RENDER_LINKS).sendToServer();
 	}
 
 	@Override
@@ -85,6 +80,6 @@ public class UCCommand extends CommandBase
 		List<String> players = Lists.newArrayList(ServerUtil.getAllPlayers_list());
 		players.add("all");
 		String[] names = new String[players.size()];
-		return args.length == 1 ? getListOfStringsMatchingLastWord(args, "updateCapes", "updateDevRender", "rebuildDevRenderLinks") : args.length == 2 ? getListOfStringsMatchingLastWord(args, players.toArray(names)) : null;
+		return args.length == 1 ? getListOfStringsMatchingLastWord(args, "updateDevRender", "rebuildLinks") : args.length == 2 ? getListOfStringsMatchingLastWord(args, players.toArray(names)) : null;
 	}
 }

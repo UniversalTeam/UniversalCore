@@ -7,8 +7,8 @@ import universalteam.universalcore.client.CapeEventHandler;
 import universalteam.universalcore.client.DevRenderEventHandler;
 import universalteam.universalcore.client.render.block.BlockAdvancedRenderingHandler;
 import universalteam.universalcore.compat.UCPluginListener;
+import universalteam.universalcore.network.PacketConstants;
 import universalteam.universalcore.network.UCCPH;
-import universalteam.universalcore.network.UCSPH;
 
 public class ClientProxy extends CommonProxy
 {
@@ -25,7 +25,7 @@ public class ClientProxy extends CommonProxy
 	{
 		super.init();
 
-		PacketCustom.assignHandler(UCCPH.CHANNEL, new UCCPH());
+		PacketCustom.assignHandler(PacketConstants.CHANNEL, new UCCPH());
 
 		UCPluginListener.handleClient();
 	}

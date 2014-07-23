@@ -15,7 +15,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import org.lwjgl.opengl.GL11;
 import universalteam.universalcore.libs.environment.EnvironmentChecks;
-import universalteam.universalcore.network.UCSPH;
+import universalteam.universalcore.network.PacketConstants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -214,7 +214,7 @@ public class DevRenderEventHandler
 
 	protected void sendUpdatePacket(String username)
 	{
-		PacketCustom packet = new PacketCustom(UCSPH.CHANNEL, UCSPH.UPDATE_DEV_RENDER);
+		PacketCustom packet = new PacketCustom(PacketConstants.CHANNEL, PacketConstants.UPDATE_DEV_RENDER);
 		DevRenderEntry entry = renderEntries.get(username);
 		packet.writeString(username);
 		packet.writeFloat(entry.getRed());

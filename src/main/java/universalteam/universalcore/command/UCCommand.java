@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityCommandBlock;
 import universalteam.universalcore.client.DevRenderEventHandler;
-import universalteam.universalcore.network.UCSPH;
+import universalteam.universalcore.network.PacketConstants;
 import universalteam.universalcore.utils.ServerUtil;
 
 import java.util.Arrays;
@@ -71,7 +71,7 @@ public class UCCommand extends CommandBase
 
 	protected void rebuildLinks()
 	{
-		new PacketCustom(UCSPH.CHANNEL, UCSPH.UPDATE_DEV_RENDER_LINKS).sendToServer();
+		new PacketCustom(PacketConstants.CHANNEL, PacketConstants.UPDATE_DEV_RENDER_LINKS).sendToServer();
 	}
 
 	@Override

@@ -4,16 +4,11 @@ import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IServerPacketHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.INetHandlerPlayServer;
-import universalteam.universalcore.libs.ReferenceCore;
+
+import static universalteam.universalcore.network.PacketConstants.*;
 
 public class UCSPH implements IServerPacketHandler
 {
-	public static final String CHANNEL = ReferenceCore.MODID;
-
-	public static final int TILE_PACKET = 1;
-	public static final int UPDATE_DEV_RENDER = 2;
-	public static final int UPDATE_DEV_RENDER_LINKS = 3;
-
 	@Override
 	public void handlePacket(PacketCustom packet, EntityPlayerMP player, INetHandlerPlayServer netHandler)
 	{

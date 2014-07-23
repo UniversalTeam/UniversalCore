@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+@Deprecated
 public class UniversalCoreAccessTransformer extends AccessTransformer
 {
 

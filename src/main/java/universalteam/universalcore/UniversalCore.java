@@ -11,7 +11,7 @@ import universalteam.universalcore.libs.environment.EnvironmentChecks;
 import universalteam.universalcore.proxies.CommonProxy;
 import universalteam.universalcore.utils.UCLogger;
 
-@Mod(modid = ReferenceCore.MODID, name = ReferenceCore.MODNAME, version = ReferenceCore.VERSION, dependencies = "")
+@Mod(modid = ReferenceCore.MODID, name = ReferenceCore.MODNAME, version = ReferenceCore.VERSION, dependencies = "before:VersionChecker")
 public class UniversalCore
 {
 	@SidedProxy(clientSide = "universalteam.universalcore.proxies.ClientProxy", serverSide = "universalteam.universalcore.proxies.CommonProxy")

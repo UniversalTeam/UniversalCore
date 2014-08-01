@@ -22,6 +22,8 @@ public class CommonProxy
 		PacketCustom.assignHandler(PacketConstants.CHANNEL, new UCSPH());
 
 		UCPluginListener.handleCommon();
+
+		UCVersionChecker.execute();
 	}
 
 	public void postInit()

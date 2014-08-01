@@ -13,16 +13,16 @@ import static universalteam.universalcore.UniversalCore.logger;
 
 public class UCVersion
 {
-	private String modName = "";
-	private String newVersion = "";
-	private String updateURL = "";
-	private boolean isDirectLink = false;
-	private String changelog = "";
+	public String modName = "";
+	public String newVersion = "";
+	public String updateURL = "";
+	public boolean isDirectLink = false;
+	public String changelog = "";
 
-	private String versionFileLink;
-	private String currentVersion;
+	public String versionFileLink;
+	public String currentVersion;
 
-	private boolean isRead = false;
+	public boolean isRead = false;
 
 	public UCVersion(String currentVersion, String versionFileLink)
 	{

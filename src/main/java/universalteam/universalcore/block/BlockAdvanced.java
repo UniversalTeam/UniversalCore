@@ -333,6 +333,12 @@ abstract public class BlockAdvanced extends Block
 		return dir;
 	}
 
+	public <T> T getTile(World world, int x, int y, int z, Class<T> clazz)
+	{
+		TileAdvanced tile = getTile(world, x, y, z);
+		return !clazz.isInstance(tile) ? null : (T)tile;
+	}
+
 	public TileAdvanced getTile(World world, int x, int y, int z)
 	{
 		return (TileAdvanced) world.getTileEntity(x, y, z);

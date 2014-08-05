@@ -2,6 +2,7 @@ package universalteam.universalcore.proxies;
 
 import codechicken.lib.packet.PacketCustom;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraftforge.common.MinecraftForge;
 import universalteam.universalcore.client.CapeEventHandler;
 import universalteam.universalcore.client.DevRenderEventHandler;
@@ -9,6 +10,7 @@ import universalteam.universalcore.client.render.block.BlockAdvancedRenderingHan
 import universalteam.universalcore.compat.UCPluginListener;
 import universalteam.universalcore.network.PacketConstants;
 import universalteam.universalcore.network.UCCPH;
+import universalteam.universalcore.version.UCVersionChecker;
 
 public class ClientProxy extends CommonProxy
 {
@@ -18,6 +20,8 @@ public class ClientProxy extends CommonProxy
 		super.preInit();
 
 		initClientEventHandlers();
+
+		initISBRHs();
 	}
 
 	@Override
@@ -46,6 +50,7 @@ public class ClientProxy extends CommonProxy
 	{
 		MinecraftForge.EVENT_BUS.register(new CapeEventHandler());
 		MinecraftForge.EVENT_BUS.register(new DevRenderEventHandler());
+		FMLCommonHandler.instance().bus().register(new UCVersionChecker());
 	}
 
 	public void initISBRHs()

@@ -5,10 +5,13 @@ import com.google.common.collect.Lists;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import universalteam.universalcore.libs.ReferenceCore;
 
 import java.util.List;
@@ -20,6 +23,7 @@ public class UCVersionChecker
 
 	protected static boolean ownCheck = false;
 	protected static boolean checked = false;
+	protected static boolean reported = false;
 
 	public static void registerModVersion(UCVersion version)
 	{
@@ -63,10 +67,7 @@ public class UCVersionChecker
 	{
 		version.fromJson();
 
-		if (version.isRead)
-			return isNewVersion(version.currentVersion, version.newVersion);
-
-		return false;
+		return version.isRead && isNewVersion(version.currentVersion, version.newVersion);
 	}
 
 	protected static boolean isNewVersion(String oldVersion, String newVersion)
@@ -92,22 +93,27 @@ public class UCVersionChecker
 	}
 
 	@SubscribeEvent
-	public void onPlayerJoin(EntityJoinWorldEvent event)
+	public void onClientTick(TickEvent.ClientTickEvent event)
 	{
-		if (!(event.entity instanceof EntityPlayer) || checked || !ownCheck)
+		if (!checked || !ownCheck || event.phase != TickEvent.Phase.END || Minecraft.getMinecraft().thePlayer == null || reported)
 			return;
 
-		EntityPlayer player = (EntityPlayer) event.entity;
+		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+		int count = 0;
 
 		for (NewVersionInstance version : newVersionInstances)
 		{
-			player.addChatMessage(new ChatComponentText(EnumChatFormatting.BLUE + version.name + EnumChatFormatting.WHITE + "has a new version (" + version.name +") the changes are:"));
+			count++;
+			player.addChatComponentMessage(new ChatComponentTranslation("universalcore.version.outdated", version.name, version.newVersion).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
 
 			for (String line : version.changelog)
-				player.addChatComponentMessage(new ChatComponentText("-" + line));
+				player.addChatComponentMessage(new ChatComponentText("-" + line.replaceAll("\\t", "")));
 
-			player.addChatMessage(new ChatComponentText("")); // add empty line to split different mods
+			if (count != newVersionInstances.size())
+			player.addChatComponentMessage(new ChatComponentText("")); // add empty line to split different mods
 		}
+
+		reported = true;
 	}
 
 	public static class NewVersionInstance

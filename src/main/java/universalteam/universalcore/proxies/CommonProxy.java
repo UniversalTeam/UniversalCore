@@ -14,7 +14,7 @@ public class CommonProxy
 {
 	public void preInit()
 	{
-		UCVersionChecker.registerModVersion(new UCVersion(ReferenceCore.VERSION, "")); //TODO FILL IN
+		UCVersionChecker.registerModVersion(new UCVersion(ReferenceCore.VERSION, "https://raw.githubusercontent.com/UniversalTeam/UCModVersions/master/UniversalCore/version.json"));
 	}
 
 	public void init()

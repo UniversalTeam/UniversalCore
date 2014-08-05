@@ -10,8 +10,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author King Lemming
  * 
  */
-public class TileEnergyHandler extends TileEntity// implements IEnergyHandler
-{
+public class TileEnergyHandler extends TileEntity implements IEnergyHandler {
 
 	protected EnergyStorage storage = new EnergyStorage(32000);
 
@@ -30,7 +29,7 @@ public class TileEnergyHandler extends TileEntity// implements IEnergyHandler
 	}
 
 	/* IEnergyHandler */
-/*	@Override
+	@Override
 	public boolean canConnectEnergy(ForgeDirection from) {
 
 		return true;
@@ -59,5 +58,5 @@ public class TileEnergyHandler extends TileEntity// implements IEnergyHandler
 
 		return storage.getMaxEnergyStored();
 	}
-*/
+
 }

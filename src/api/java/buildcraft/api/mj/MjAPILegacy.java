@@ -20,7 +20,7 @@ public class MjAPILegacy implements IPowerReceptor {
 	private final PowerHandler powerHandler;
 	private final World world;
 
-	protected MjAPILegacy(World world, MjAPI.BatteryObject battery, PowerHandler.Type type) {
+	protected MjAPILegacy(World world, IBatteryObject battery, PowerHandler.Type type) {
 		if (battery == null) {
 			throw new NullPointerException();
 		}
@@ -28,24 +28,19 @@ public class MjAPILegacy implements IPowerReceptor {
 		this.powerHandler = new PowerHandler(this, type, battery);
 	}
 
-	public static MjAPILegacy from(World world, MjAPI.BatteryObject battery, PowerHandler.Type type) {
+	public static MjAPILegacy from(World world, IBatteryObject battery, PowerHandler.Type type) {
+		if (battery == null) {
+			return null;
+		}
 		return new MjAPILegacy(world, battery, type);
 	}
 
 	public static MjAPILegacy from(World world, Object object, PowerHandler.Type type) {
-		return new MjAPILegacy(world, battery(object), type);
+		return from(world, MjAPI.getMjBattery(object), type);
 	}
 
 	public static MjAPILegacy from(TileEntity tileEntity, PowerHandler.Type type) {
-		return new MjAPILegacy(tileEntity.getWorldObj(), battery(tileEntity), type);
-	}
-
-	private static MjAPI.BatteryObject battery(Object object) {
-		MjAPI.BatteryObject battery = MjAPI.getMjBattery(object);
-		if (battery == null) {
-			throw new IllegalArgumentException(String.format("Object %s not using MjAPI, can't create legacy wrapper", object));
-		}
-		return battery;
+		return from(tileEntity.getWorldObj(), MjAPI.getMjBattery(tileEntity), type);
 	}
 
 	@Override

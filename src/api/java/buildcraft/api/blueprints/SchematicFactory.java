@@ -14,17 +14,19 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class SchematicFactory<S extends Schematic> {
 
-	private static final HashMap<String, SchematicFactory> factories = new HashMap<String, SchematicFactory>();
+	private static final HashMap<String, SchematicFactory<?>> factories = new HashMap<String, SchematicFactory<?>>();
 
-	private static final HashMap<Class<? extends Schematic>, SchematicFactory> schematicToFactory = new HashMap<Class<? extends Schematic>, SchematicFactory>();
+	private static final HashMap<Class<? extends Schematic>, SchematicFactory<?>> schematicToFactory = new HashMap<Class<? extends Schematic>, SchematicFactory<?>>();
 
-	protected abstract S loadSchematicFromWorldNBT (NBTTagCompound nbt, MappingRegistry registry);
+	protected abstract S loadSchematicFromWorldNBT(NBTTagCompound nbt, MappingRegistry registry)
+			throws MappingNotFoundException;
 
 	public void saveSchematicToWorldNBT (NBTTagCompound nbt, S object, MappingRegistry registry) {
 		nbt.setString("factoryID", getClass().getCanonicalName());
 	}
 
-	public static Schematic createSchematicFromWorldNBT (NBTTagCompound nbt, MappingRegistry registry) {
+	public static Schematic createSchematicFromWorldNBT(NBTTagCompound nbt, MappingRegistry registry)
+			throws MappingNotFoundException {
 		String factoryName = nbt.getString("factoryID");
 
 		if (factories.containsKey(factoryName)) {
@@ -34,7 +36,7 @@ public abstract class SchematicFactory<S extends Schematic> {
 		}
 	}
 
-	public static void registerSchematicFactory(Class<? extends Schematic> clas, SchematicFactory factory) {
+	public static void registerSchematicFactory(Class<? extends Schematic> clas, SchematicFactory<?> factory) {
 		schematicToFactory.put(clas, factory);
 		factories.put(factory.getClass().getCanonicalName(), factory);
 	}

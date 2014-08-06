@@ -16,6 +16,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class JavaTools {
+	public static double bounds(double value, double min, double max) {
+		return Math.max(min, Math.min(value, max));
+	}
 
 	public static <T> T[] concat(T[] first, T[] second) {
 		T[] result = Arrays.copyOf(first, first.length + second.length);
@@ -47,10 +50,10 @@ public class JavaTools {
 	    return c;
 	}
 
-	public static List<Field> getAllFields(Class clas) {
+	public static List<Field> getAllFields(Class<?> clas) {
 	    List<Field> result = new ArrayList<Field>();
 
-	    Class current = clas;
+	    Class<?> current = clas;
 
 	    while (current != null && current != Object.class) {
 	    	for (Field f : current.getDeclaredFields()) {
@@ -63,10 +66,10 @@ public class JavaTools {
 	    return result;
 	}
 
-	public static List<Method> getAllMethods(Class clas) {
+	public static List<Method> getAllMethods(Class<?> clas) {
 	    List<Method> result = new ArrayList<Method>();
 
-	    Class current = clas;
+	    Class<?> current = clas;
 
 	    while (current != null && current != Object.class) {
 	    	for (Method m : current.getDeclaredMethods()) {

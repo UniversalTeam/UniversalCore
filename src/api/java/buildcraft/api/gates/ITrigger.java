@@ -8,51 +8,9 @@
  */
 package buildcraft.api.gates;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public interface ITrigger {
+public interface ITrigger extends IStatement {
 
-	/**
-	 * Every trigger needs a unique tag, it should be in the format of
-	 * "<modid>:<name>".
-	 *
-	 * @return the unique id
-	 */
-	String getUniqueTag();
+	boolean isTriggerActive(IGate gate, ITriggerParameter[] parameters);
 
-	@SideOnly(Side.CLIENT)
-	IIcon getIcon();
-
-	@SideOnly(Side.CLIENT)
-	void registerIcons(IIconRegister iconRegister);
-
-	/**
-	 * Return true if this trigger can accept parameters
-	 */
-	boolean hasParameter();
-
-	/**
-	 * Return true if this trigger requires a parameter
-	 */
-	boolean requiresParameter();
-
-	/**
-	 * Return the trigger description in the UI
-	 */
-	String getDescription();
-
-	/**
-	 * Create parameters for the trigger. As for now, there is only one kind of
-	 * trigger parameter available so this subprogram is final.
-	 */
-	ITriggerParameter createParameter();
-
-	/**
-	 * This returns the trigger after a left rotation. Used in particular in
-	 * blueprints orientation.
-	 */
-	ITrigger rotateLeft();
 }

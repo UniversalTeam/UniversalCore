@@ -4,7 +4,6 @@ import codechicken.lib.packet.PacketCustom;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraftforge.common.MinecraftForge;
-import universalteam.universalcore.client.CapeEventHandler;
 import universalteam.universalcore.client.DevRenderEventHandler;
 import universalteam.universalcore.client.render.block.BlockAdvancedRenderingHandler;
 import universalteam.universalcore.compat.UCPluginListener;
@@ -48,7 +47,6 @@ public class ClientProxy extends CommonProxy
 
 	public void initClientEventHandlers()
 	{
-		MinecraftForge.EVENT_BUS.register(new CapeEventHandler());
 		MinecraftForge.EVENT_BUS.register(new DevRenderEventHandler());
 		FMLCommonHandler.instance().bus().register(new UCVersionChecker());
 	}

@@ -1,5 +1,6 @@
 package universalteam.universalcore.utils;
 
+import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.command.ICommand;
@@ -40,7 +41,17 @@ public class ServerUtil
 
 	public static boolean isOp(String username)
 	{
-		return manager().isPlayerOpped(username);
+		GameProfile profile = getGameProfile(username);
+
+		if (profile == null)
+			return false;
+
+		return manager().func_152596_g(profile);
+	}
+
+	public static GameProfile getGameProfile(String username)
+	{
+		return server().func_152358_ax().func_152655_a(username);
 	}
 
 	public static boolean isOp(EntityPlayer player)
@@ -55,7 +66,7 @@ public class ServerUtil
 
 	public static EntityPlayer getPlayerForUserName(String name)
 	{
-		return manager().getPlayerForUsername(name);
+		return manager().func_152612_a(name);
 	}
 
 	public static void kickPlayer(EntityPlayer player, String text)

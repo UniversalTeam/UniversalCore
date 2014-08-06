@@ -14,7 +14,6 @@ import java.util.LinkedList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -36,7 +35,7 @@ public class SchematicBlock extends SchematicBlockBase {
 	public ItemStack [] storedRequirements = new ItemStack [0];
 
 	@Override
-	public void writeRequirementsToBuilder(IBuilderContext context, LinkedList<ItemStack> requirements) {
+	public void writeRequirementsToWorld(IBuilderContext context, LinkedList<ItemStack> requirements) {
 		if (block != null) {
 			if (storedRequirements.length != 0) {
 				for (ItemStack s : storedRequirements) {
@@ -54,30 +53,17 @@ public class SchematicBlock extends SchematicBlockBase {
 	}
 
 	@Override
-	public void rotateLeft(IBuilderContext context) {
-
-	}
-
-	@Override
 	public void writeToWorld(IBuilderContext context, int x, int y, int z, LinkedList<ItemStack> stacks) {
+		super.writeToWorld(context, x, y, z, stacks);
+
 		// Meta needs to be specified twice, depending on the block behavior
 		context.world().setBlock(x, y, z, block, meta, 3);
 		context.world().setBlockMetadataWithNotify(x, y, z, meta, 3);
 	}
 
 	@Override
-	public boolean doNotBuild() {
-		return false;
-	}
-
-	@Override
-	public void readFromWorld(IBuilderContext context, int x, int y, int z) {
-
-	}
-
-	@Override
-	public void readRequirementsFromWorld(IBuilderContext context, int x, int y, int z) {
-		super.readRequirementsFromWorld(context, x, y, z);
+	public void writeRequirementsToBlueprint(IBuilderContext context, int x, int y, int z) {
+		super.writeRequirementsToBlueprint(context, x, y, z);
 
 		if (block != null) {
 			ArrayList<ItemStack> req = block.getDrops(context.world(), x,
@@ -92,6 +78,8 @@ public class SchematicBlock extends SchematicBlockBase {
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt, MappingRegistry registry) {
+		super.writeToNBT(nbt, registry);
+
 		nbt.setInteger("blockId", registry.getIdForBlock(block));
 		nbt.setInteger("blockMeta", meta);
 
@@ -100,8 +88,8 @@ public class SchematicBlock extends SchematicBlockBase {
 
 			for (ItemStack stack : storedRequirements) {
 				NBTTagCompound sub = new NBTTagCompound();
-				stack.writeToNBT(stack.writeToNBT(sub));
-				sub.setInteger("id", registry.getIdForItem(stack.getItem()));
+				stack.writeToNBT(sub);
+				registry.stackToRegistry(sub);
 				rq.appendTag(sub);
 			}
 
@@ -111,7 +99,16 @@ public class SchematicBlock extends SchematicBlockBase {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt,	MappingRegistry registry) {
-		block = registry.getBlockForId(nbt.getInteger("blockId"));
+		super.readFromNBT(nbt, registry);
+
+		try {
+			block = registry.getBlockForId(nbt.getInteger("blockId"));
+		} catch (MappingNotFoundException e) {
+			defaultPermission = BuildingPermission.CREATIVE_ONLY;
+
+			return;
+		}
+
 		meta = nbt.getInteger("blockMeta");
 
 		if (nbt.hasKey("rq")) {
@@ -124,15 +121,13 @@ public class SchematicBlock extends SchematicBlockBase {
 					NBTTagCompound sub = rq.getCompoundTagAt(i);
 
 					if (sub.getInteger("id") >= 0) {
-						// Maps the id in the blueprint to the id in the world
-						sub.setInteger("id", Item.itemRegistry
-								.getIDForObject(registry.getItemForId(sub
-										.getInteger("id"))));
-
+						registry.stackToWorld(sub);
 						rqs.add(ItemStack.loadItemStackFromNBT(sub));
 					} else {
 						defaultPermission = BuildingPermission.CREATIVE_ONLY;
 					}
+				} catch (MappingNotFoundException e) {
+					defaultPermission = BuildingPermission.CREATIVE_ONLY;
 				} catch (Throwable t) {
 					t.printStackTrace();
 					defaultPermission = BuildingPermission.CREATIVE_ONLY;

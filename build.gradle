@@ -60,6 +60,7 @@ processResources
 jar {
     manifest {
         attributes 'FMLCorePlugin': 'universalteam.universalcore.preloader.UniversalCoreLoadingPlugin'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
         attributes 'UCPluginListener': 'universalteam.universalcore.compat.UCPluginListener'
     }
 }

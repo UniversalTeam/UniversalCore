@@ -16,8 +16,8 @@ import static universalteam.universalcore.UniversalCore.logger;
 
 public class UniversalCoreLoadingPlugin implements IFMLLoadingPlugin, IFMLCallHook
 {
-	public File mcDir;
-	public String mcVersion;
+	public static File mcDir;
+	public static String mcVersion;
 
 	public static UCLogger preLogger = logger.setSubName("preloader");
 

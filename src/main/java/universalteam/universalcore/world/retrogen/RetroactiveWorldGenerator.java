@@ -23,17 +23,6 @@ public class RetroactiveWorldGenerator
 		generators.add(generator);
 	}
 
-	public static void setAlreadyGeneratedWorld(World world, IRetroGenerator generator)
-	{
-		RetroGenSaveData data = (RetroGenSaveData) world.perWorldStorage.loadData(RetroGenSaveData.class, retroGenSaveDataName);
-
-		if (data == null)
-			data = new RetroGenSaveData(retroGenSaveDataName);
-
-		data.markAlreadyGeneratedInWorld(world, generator.getUniqueGenerationID());
-		world.perWorldStorage.setData(retroGenSaveDataName, data);
-	}
-
 	private RetroGenSaveData getRetroGenSaveData(World world)
 	{
 		RetroGenSaveData data = (RetroGenSaveData) world.perWorldStorage.loadData(RetroGenSaveData.class, retroGenSaveDataName);
@@ -56,7 +45,7 @@ public class RetroactiveWorldGenerator
 		Chunk chunk = event.getChunk();
 
 		for (IRetroGenerator gen : generators)
-			if (gen.canGenerateIn(world, chunk) && data.isGenerationNeeded(coord, gen.getUniqueGenerationID()) && !data.isAlreadyGeneratedInWorld(world, gen.getUniqueGenerationID()))
+			if (gen.canGenerateIn(world, chunk) && data.isGenerationNeeded(coord, gen.getUniqueGenerationID()))
 			{
 				genQueue.add(new RetroGenEntry(world, coord, gen));
 				data.markChunkRetroGenerated(coord, gen.getUniqueGenerationID());

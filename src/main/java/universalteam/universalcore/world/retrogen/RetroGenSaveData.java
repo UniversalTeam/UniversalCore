@@ -1,15 +1,21 @@
 package universalteam.universalcore.world.retrogen;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import universalteam.universalcore.utils.ChunkCoord;
 
+import java.util.List;
 import java.util.Map;
 
 public class RetroGenSaveData extends WorldSavedData
 {
 	private Map<ChunkCoord, NBTTagCompound> chunks = Maps.newHashMap();
+	private Multimap<Integer, String> alreadyGeneratedWorlds = ArrayListMultimap.create();
 
 	private final String NBT_SIZE = "size";
 	private final String NBT_LOC_X = "CoordLocX";
@@ -38,6 +44,16 @@ public class RetroGenSaveData extends WorldSavedData
 		nbt.setBoolean(genID, true);
 		chunks.put(coord, nbt);
 		this.markDirty();
+	}
+
+	public void markAlreadyGeneratedInWorld(World world, String genID)
+	{
+		alreadyGeneratedWorlds.put(world.provider.dimensionId, genID);
+	}
+
+	public boolean isAlreadyGeneratedInWorld(World world, String genID)
+	{
+		return alreadyGeneratedWorlds.containsKey(world.provider.dimensionId) && alreadyGeneratedWorlds.get(world.provider.dimensionId).contains(genID);
 	}
 
 	@Override

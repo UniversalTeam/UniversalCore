@@ -13,74 +13,85 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class RetroactiveWorldGenerator
 {
-    private static ArrayList<IRetroGenerator> generators = Lists.newArrayList();
-    private static ConcurrentLinkedQueue<RetroGenEntry> genQueue = new ConcurrentLinkedQueue<RetroGenEntry>();
+	private static ArrayList<IRetroGenerator> generators = Lists.newArrayList();
+	private static ConcurrentLinkedQueue<RetroGenEntry> genQueue = new ConcurrentLinkedQueue<RetroGenEntry>();
 
-    private String retroGenSaveDataName = "uc_retrogen_data";
+	public static final String retroGenSaveDataName = "uc_retrogen_data";
 
-    public static void registerRetroGenerator(IRetroGenerator generator)
-    {
-        generators.add(generator);
-    }
+	public static void registerRetroGenerator(IRetroGenerator generator)
+	{
+		generators.add(generator);
+	}
 
-    private RetroGenSaveData getRetroGenSaveData(World world)
-    {
-        RetroGenSaveData data = (RetroGenSaveData) world.perWorldStorage.loadData(RetroGenSaveData.class, retroGenSaveDataName);
+	public static void setAlreadyGeneratedWorld(World world, IRetroGenerator generator)
+	{
+		RetroGenSaveData data = (RetroGenSaveData) world.perWorldStorage.loadData(RetroGenSaveData.class, retroGenSaveDataName);
 
-        if (data == null)
-        {
-            data = new RetroGenSaveData(retroGenSaveDataName);
-            world.perWorldStorage.setData(retroGenSaveDataName, data);
-        }
+		if (data == null)
+			data = new RetroGenSaveData(retroGenSaveDataName);
 
-        return data;
-    }
+		data.markAlreadyGeneratedInWorld(world, generator.getUniqueGenerationID());
+		world.perWorldStorage.setData(retroGenSaveDataName, data);
+	}
 
-    @SubscribeEvent
-    public void onChunkLoad(ChunkEvent.Load event)
-    {
-        RetroGenSaveData data = getRetroGenSaveData(event.world);
-        ChunkCoord coord = new ChunkCoord(event.getChunk());
-        World world = event.world;
-        Chunk chunk = event.getChunk();
+	private RetroGenSaveData getRetroGenSaveData(World world)
+	{
+		RetroGenSaveData data = (RetroGenSaveData) world.perWorldStorage.loadData(RetroGenSaveData.class, retroGenSaveDataName);
 
-        for (IRetroGenerator gen : generators)
-            if (gen.canGenerateIn(world, chunk) && data.isGenerationNeeded(coord, gen.getUniqueGenerationID()))
-            {
-                genQueue.add(new RetroGenEntry(world, coord, gen));
-                data.markChunkRetroGenerated(coord, gen.getUniqueGenerationID());
-            }
-    }
+		if (data == null)
+		{
+			data = new RetroGenSaveData(retroGenSaveDataName);
+			world.perWorldStorage.setData(retroGenSaveDataName, data);
+		}
 
-    @SubscribeEvent
-    public void onWorldTick(TickEvent.WorldTickEvent event)
-    {
-        if (event.phase != TickEvent.Phase.START)
-            return;
+		return data;
+	}
 
-        World world = event.world;
+	@SubscribeEvent
+	public void onChunkLoad(ChunkEvent.Load event)
+	{
+		RetroGenSaveData data = getRetroGenSaveData(event.world);
+		ChunkCoord coord = new ChunkCoord(event.getChunk());
+		World world = event.world;
+		Chunk chunk = event.getChunk();
 
-        while (!genQueue.isEmpty())
-        {
-            if (world.getWorldTime() % 10 != 0)
-                continue;
+		for (IRetroGenerator gen : generators)
+			if (gen.canGenerateIn(world, chunk) && data.isGenerationNeeded(coord, gen.getUniqueGenerationID()) && !data.isAlreadyGeneratedInWorld(world, gen.getUniqueGenerationID()))
+			{
+				genQueue.add(new RetroGenEntry(world, coord, gen));
+				data.markChunkRetroGenerated(coord, gen.getUniqueGenerationID());
+			}
+	}
 
-            RetroGenEntry entry = genQueue.poll();
-            entry.gen.generate(entry.world.rand, entry.world, entry.coord.chunkX, entry.coord.chunkZ);
-        }
-    }
+	@SubscribeEvent
+	public void onWorldTick(TickEvent.WorldTickEvent event)
+	{
+		if (event.phase != TickEvent.Phase.START)
+			return;
 
-    public class RetroGenEntry
-    {
-        World world;
-        ChunkCoord coord;
-        IRetroGenerator gen;
+		World world = event.world;
 
-        public RetroGenEntry(World world, ChunkCoord coord, IRetroGenerator gen)
-        {
-            this.world = world;
-            this.coord = coord;
-            this.gen = gen;
-        }
-    }
+		while (!genQueue.isEmpty())
+		{
+			if (world.getWorldTime() % 10 != 0)
+				continue;
+
+			RetroGenEntry entry = genQueue.poll();
+			entry.gen.generate(entry.world.rand, entry.world, entry.coord.chunkX, entry.coord.chunkZ);
+		}
+	}
+
+	public class RetroGenEntry
+	{
+		World world;
+		ChunkCoord coord;
+		IRetroGenerator gen;
+
+		public RetroGenEntry(World world, ChunkCoord coord, IRetroGenerator gen)
+		{
+			this.world = world;
+			this.coord = coord;
+			this.gen = gen;
+		}
+	}
 }

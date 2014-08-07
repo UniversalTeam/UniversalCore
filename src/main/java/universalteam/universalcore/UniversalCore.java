@@ -14,6 +14,9 @@ import universalteam.universalcore.utils.UCLogger;
 @Mod(modid = ReferenceCore.MODID, name = ReferenceCore.MODNAME, version = ReferenceCore.VERSION, dependencies = "before:VersionChecker")
 public class UniversalCore
 {
+	@Mod.Instance(ReferenceCore.MODID)
+	public static UniversalCore instance;
+
 	@SidedProxy(clientSide = "universalteam.universalcore.proxies.ClientProxy", serverSide = "universalteam.universalcore.proxies.CommonProxy")
 	public static CommonProxy proxy;
 

@@ -1,5 +1,6 @@
 package universalteam.universalcore.utils;
 
+import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -19,12 +20,12 @@ public class BlockUtil
 
 	public static Block getBlockForUniqueName(String name)
 	{
-		return name.contains(":") ? getBlockForUniqueName(name.substring(0, name.indexOf(':')), name.substring(name.indexOf(':' + 1))) : null;
+		return GameData.getBlockRegistry().getObject(name);
 	}
 
 	public static Block getBlockForUniqueName(String modID, String name)
 	{
-		return GameRegistry.findBlock(modID, name);
+		return getBlockForUniqueName(String.format("%s:%s", modID, name));
 	}
 
 	public static Block getBlockFromItem(Item item)

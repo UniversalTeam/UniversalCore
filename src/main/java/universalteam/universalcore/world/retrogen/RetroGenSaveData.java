@@ -28,7 +28,7 @@ public class RetroGenSaveData extends WorldSavedData
 	{
 		NBTTagCompound nbt = chunks.get(coord);
 
-		return !(nbt == null || !nbt.hasKey(genID)) && !nbt.getBoolean(genID);
+		return nbt == null || !nbt.hasKey(genID) || !nbt.getBoolean(genID);
 	}
 
 	public void markChunkRetroGenerated(ChunkCoord coord, String genID)

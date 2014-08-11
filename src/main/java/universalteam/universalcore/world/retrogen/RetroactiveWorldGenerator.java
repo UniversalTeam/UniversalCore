@@ -55,10 +55,14 @@ public class RetroactiveWorldGenerator
 	@SubscribeEvent
 	public void onWorldTick(TickEvent.WorldTickEvent event)
 	{
+		if (genQueue.isEmpty())
+			return;
+
 		if (event.phase != TickEvent.Phase.START)
 			return;
 
 		World world = event.world;
+		int count = 0;
 
 		while (!genQueue.isEmpty())
 		{
@@ -67,6 +71,10 @@ public class RetroactiveWorldGenerator
 
 			RetroGenEntry entry = genQueue.poll();
 			entry.gen.generate(entry.world.rand, entry.world, entry.coord.chunkX, entry.coord.chunkZ);
+			count++;
+
+			if (count >= 32)
+				break;
 		}
 	}
 

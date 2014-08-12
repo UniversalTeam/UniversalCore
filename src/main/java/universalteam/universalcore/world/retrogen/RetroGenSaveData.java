@@ -40,7 +40,8 @@ public class RetroGenSaveData extends WorldSavedData
 
 		nbt.setBoolean(genID, true);
 		chunks.put(coord, nbt);
-		this.markDirty();
+
+		markDirty();
 	}
 
 	@Override

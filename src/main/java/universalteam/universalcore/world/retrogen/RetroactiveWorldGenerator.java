@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class RetroactiveWorldGenerator
 {
 	private static ArrayList<IRetroGenerator> generators = Lists.newArrayList();
-	private static ConcurrentLinkedQueue<RetroGenEntry> genQueue = new ConcurrentLinkedQueue<RetroGenEntry>();
+	private static ArrayList<RetroGenEntry> genQueue = Lists.newArrayList();
 
 	public static final String retroGenSaveDataName = "uc_retrogen_data";
 
@@ -58,24 +58,24 @@ public class RetroactiveWorldGenerator
 		if (genQueue.isEmpty())
 			return;
 
-		if (event.phase != TickEvent.Phase.START)
+		if (event.phase == TickEvent.Phase.START)
 			return;
 
-		World world = event.world;
 		int count = 0;
+		ArrayList<RetroGenEntry> removeQueue = Lists.newArrayList();
+		ArrayList<RetroGenEntry> iterationQueue = (ArrayList<RetroGenEntry>) genQueue.clone();
 
-		while (!genQueue.isEmpty())
+		for (RetroGenEntry entry : iterationQueue)
 		{
-			if (world.getWorldTime() % 10 != 0)
-				continue;
-
-			RetroGenEntry entry = genQueue.poll();
 			entry.gen.generate(entry.world.rand, entry.world, entry.coord.chunkX, entry.coord.chunkZ);
+			removeQueue.add(entry);
 			count++;
 
 			if (count >= 32)
 				break;
 		}
+
+		genQueue.removeAll(removeQueue);
 	}
 
 	public class RetroGenEntry

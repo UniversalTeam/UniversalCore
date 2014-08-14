@@ -15,7 +15,7 @@ buildscript {
     }
 }
 
-apply plugin: 'scala'
+//apply plugin: 'scala'
 apply plugin: 'forge'
 
 ext.buildProps = file "build.properties"
@@ -48,12 +48,11 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         include '*.info'
                 
-        expand 'version':project.version, 'mcversion':project.minecraft.version, 'cclversion':config.version.ccl
+        expand 'version':project.version, 'mcversion':project.minecraft.version, 'cclversion':config.version.ccl, 'fmpversion': config.version.FMP
     }
         
     from(sourceSets.main.resources.srcDirs) {
-        include '**/*.info'
-        include '**/*.properties'
+        include 'assets/**/*.*'
     }
 }
 

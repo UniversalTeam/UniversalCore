@@ -4,6 +4,7 @@ import codechicken.lib.packet.PacketCustom;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraftforge.common.MinecraftForge;
+import universalteam.universalcore.block.highlight.CustomBlockHighLighHandler;
 import universalteam.universalcore.client.DevRenderEventHandler;
 import universalteam.universalcore.client.render.block.BlockAdvancedRenderingHandler;
 import universalteam.universalcore.compat.UCPluginListener;
@@ -55,6 +56,7 @@ public class ClientProxy extends CommonProxy
 	{
 		MinecraftForge.EVENT_BUS.register(new DevRenderEventHandler());
 		FMLCommonHandler.instance().bus().register(new UCVersionChecker());
+		MinecraftForge.EVENT_BUS.register(new CustomBlockHighLighHandler());
 	}
 
 	public void initISBRHs()

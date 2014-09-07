@@ -30,9 +30,22 @@ version = "${config.version.mod}"
 group= "universalteam.universalcore"
 archivesBaseName = "UniversalCore"
 
+repositories {
+    maven {
+        name "Mobius Repo"
+        url "http://mobiusstrip.eu/maven"
+    }
+    maven {
+        name 'CB Repo'
+        url "http://chickenbones.net/maven/"
+    }
+}
+
 dependencies {
     compile "codechicken:CodeChickenLib:${config.version.minecraft}-${config.version.ccl}:dev"
     compile "codechicken:ForgeMultipart:${config.version.minecraft}-${config.version.FMP}:dev"
+    compile "codechicken:CodeChickenCore:${config.version.minecraft}-${config.version.ccc}:dev"
+    compile "codechicken:NotEnoughItems:${config.version.minecraft}-${config.version.nei}:dev"
 }
 
 

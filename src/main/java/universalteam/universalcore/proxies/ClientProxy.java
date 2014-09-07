@@ -7,8 +7,10 @@ import net.minecraftforge.common.MinecraftForge;
 import universalteam.universalcore.client.DevRenderEventHandler;
 import universalteam.universalcore.client.render.block.BlockAdvancedRenderingHandler;
 import universalteam.universalcore.compat.UCPluginListener;
+import universalteam.universalcore.libs.ReferenceCore;
 import universalteam.universalcore.network.PacketConstants;
 import universalteam.universalcore.network.UCCPH;
+import universalteam.universalcore.version.UCVersion;
 import universalteam.universalcore.version.UCVersionChecker;
 
 public class ClientProxy extends CommonProxy
@@ -17,6 +19,8 @@ public class ClientProxy extends CommonProxy
 	public void preInit()
 	{
 		super.preInit();
+
+		UCVersionChecker.registerModVersion(new UCVersion(ReferenceCore.VERSION, "https://raw.githubusercontent.com/UniversalTeam/UCModVersions/master/UniversalCore/version.json"));
 
 		initClientEventHandlers();
 
@@ -31,6 +35,8 @@ public class ClientProxy extends CommonProxy
 		PacketCustom.assignHandler(PacketConstants.CHANNEL, new UCCPH());
 
 		UCPluginListener.handleClient();
+
+		UCVersionChecker.execute();
 	}
 
 	@Override

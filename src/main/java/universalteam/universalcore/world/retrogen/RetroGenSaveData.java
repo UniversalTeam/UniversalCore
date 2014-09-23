@@ -1,8 +1,6 @@
 package universalteam.universalcore.world.retrogen;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldSavedData;
 import universalteam.universalcore.utils.ChunkCoord;
@@ -12,7 +10,6 @@ import java.util.Map;
 public class RetroGenSaveData extends WorldSavedData
 {
 	private Map<ChunkCoord, NBTTagCompound> chunks = Maps.newHashMap();
-	private Multimap<Integer, String> alreadyGeneratedWorlds = ArrayListMultimap.create();
 
 	private final String NBT_SIZE = "size";
 	private final String NBT_LOC_X = "CoordLocX";

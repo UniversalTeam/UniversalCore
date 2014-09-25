@@ -7,6 +7,7 @@ import universalteam.universalcore.command.UCCommand;
 import universalteam.universalcore.compat.UCPluginListener;
 import universalteam.universalcore.network.PacketConstants;
 import universalteam.universalcore.network.UCSPH;
+import universalteam.universalcore.utils.EventUtil;
 import universalteam.universalcore.utils.ServerUtil;
 import universalteam.universalcore.world.retrogen.RetroactiveWorldGenerator;
 
@@ -41,7 +42,6 @@ public class CommonProxy
 
 	protected void initEventHandlers()
 	{
-		FMLCommonHandler.instance().bus().register(new RetroactiveWorldGenerator());
-		MinecraftForge.EVENT_BUS.register(new RetroactiveWorldGenerator());
+		EventUtil.register(new RetroactiveWorldGenerator());
 	}
 }

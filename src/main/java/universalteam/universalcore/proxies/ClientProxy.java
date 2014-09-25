@@ -11,6 +11,7 @@ import universalteam.universalcore.compat.UCPluginListener;
 import universalteam.universalcore.libs.ReferenceCore;
 import universalteam.universalcore.network.PacketConstants;
 import universalteam.universalcore.network.UCCPH;
+import universalteam.universalcore.utils.EventUtil;
 import universalteam.universalcore.version.UCVersion;
 import universalteam.universalcore.version.UCVersionChecker;
 
@@ -54,9 +55,9 @@ public class ClientProxy extends CommonProxy
 
 	public void initClientEventHandlers()
 	{
-		MinecraftForge.EVENT_BUS.register(new DevRenderEventHandler());
-		FMLCommonHandler.instance().bus().register(new UCVersionChecker());
-		MinecraftForge.EVENT_BUS.register(new CustomBlockHighLighHandler());
+		EventUtil.register(new DevRenderEventHandler());
+		EventUtil.register(new UCVersionChecker());
+		EventUtil.register(new CustomBlockHighLighHandler());
 	}
 
 	public void initISBRHs()

@@ -1,6 +1,6 @@
 package universalteam.universalcore.nick;
 
-public class NickNameRepo
+public class NicknameData
 {
 
 }

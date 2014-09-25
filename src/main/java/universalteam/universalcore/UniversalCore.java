@@ -6,6 +6,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import universalteam.universalcore.libs.ReferenceCore;
 import universalteam.universalcore.libs.environment.EnvironmentChecks;
 import universalteam.universalcore.proxies.CommonProxy;
@@ -46,8 +47,14 @@ public class UniversalCore
 	}
 
 	@Mod.EventHandler
-	public void onServerStart(FMLServerStartedEvent event)
+	public void serverStart(FMLServerStartedEvent event)
 	{
 		proxy.serverStarting();
+	}
+
+	@Mod.EventHandler
+	public void serverStopping(FMLServerStoppingEvent event)
+	{
+		proxy.serverStopping();
 	}
 }

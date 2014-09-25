@@ -53,6 +53,12 @@ public class ClientProxy extends CommonProxy
 		super.serverStarting();
 	}
 
+	@Override
+	public void serverStopping()
+	{
+		super.serverStopping();
+	}
+
 	public void initClientEventHandlers()
 	{
 		EventUtil.register(new DevRenderEventHandler());

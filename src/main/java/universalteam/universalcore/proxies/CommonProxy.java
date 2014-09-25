@@ -7,6 +7,7 @@ import universalteam.universalcore.command.UCCommand;
 import universalteam.universalcore.compat.UCPluginListener;
 import universalteam.universalcore.network.PacketConstants;
 import universalteam.universalcore.network.UCSPH;
+import universalteam.universalcore.nick.NicknameData;
 import universalteam.universalcore.utils.EventUtil;
 import universalteam.universalcore.utils.ServerUtil;
 import universalteam.universalcore.world.retrogen.RetroactiveWorldGenerator;
@@ -16,6 +17,8 @@ public class CommonProxy
 	public void preInit()
 	{
 		initEventHandlers();
+
+		NicknameData.initialize();
 	}
 
 	public void init()
@@ -33,6 +36,11 @@ public class CommonProxy
 	public void serverStarting()
 	{
 		initCommands();
+	}
+
+	public void serverStopping()
+	{
+		NicknameData.deInitialize();
 	}
 
 	protected void initCommands()

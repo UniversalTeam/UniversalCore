@@ -8,6 +8,7 @@ import universalteam.universalcore.compat.UCPluginListener;
 import universalteam.universalcore.network.PacketConstants;
 import universalteam.universalcore.network.UCSPH;
 import universalteam.universalcore.nick.NicknameData;
+import universalteam.universalcore.nick.NicknameHandler;
 import universalteam.universalcore.utils.EventUtil;
 import universalteam.universalcore.utils.ServerUtil;
 import universalteam.universalcore.world.retrogen.RetroactiveWorldGenerator;
@@ -51,5 +52,6 @@ public class CommonProxy
 	protected void initEventHandlers()
 	{
 		EventUtil.register(new RetroactiveWorldGenerator());
+		EventUtil.register(new NicknameHandler());
 	}
 }

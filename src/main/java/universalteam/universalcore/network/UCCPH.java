@@ -5,6 +5,7 @@ import codechicken.lib.packet.PacketCustom.IClientPacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.INetHandlerPlayClient;
 import universalteam.universalcore.client.DevRenderEventHandler;
+import universalteam.universalcore.nick.NicknameData;
 
 import static universalteam.universalcore.network.PacketConstants.*;
 
@@ -22,6 +23,9 @@ public class UCCPH implements IClientPacketHandler
 				break;
 			case UPDATE_DEV_RENDER_LINKS:
 				DevRenderEventHandler.instance.rebuildLinks();
+				break;
+			case UPDATE_NICK_NAME:
+				NicknameData.setNickname(packet.readString(), packet.readString());
 				break;
 		}
 	}

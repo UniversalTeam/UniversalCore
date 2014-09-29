@@ -3,6 +3,8 @@ package universalteam.universalcore.proxies;
 import codechicken.lib.packet.PacketCustom;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraftforge.common.MinecraftForge;
+import universalteam.universalcore.command.CommandNick;
+import universalteam.universalcore.command.CommandRealName;
 import universalteam.universalcore.command.UCCommand;
 import universalteam.universalcore.compat.UCPluginListener;
 import universalteam.universalcore.network.PacketConstants;
@@ -47,6 +49,8 @@ public class CommonProxy
 	protected void initCommands()
 	{
 		ServerUtil.registerCommand(new UCCommand());
+		ServerUtil.registerCommand(new CommandNick());
+		ServerUtil.registerCommand(new CommandRealName());
 	}
 
 	protected void initEventHandlers()

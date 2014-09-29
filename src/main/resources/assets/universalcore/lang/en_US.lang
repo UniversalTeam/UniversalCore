@@ -1,1 +1,9 @@
 universalcore.version.outdated=a new version of %s has been released (%s). this new version has the following changes:
+
+command.nick.usage=Usage : <nick|reset>
+command.nick.success=Nickname changed!
+command.nick.reset.success=Nickname reset!
+
+command.realname.usage=Usage: <nick>
+command.realname.success=%s's real name is %s!
+command.realname.fail=This nickname is not used!

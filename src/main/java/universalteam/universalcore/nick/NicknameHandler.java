@@ -12,7 +12,12 @@ public class NicknameHandler
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event)
 	{
-		NicknameData.updateNickname(event.player.getCommandSenderName());
+		String joinPlayerName = event.player.getGameProfile().getName();
+
+		if (!NicknameData.nicknames.containsKey(joinPlayerName))
+			NicknameData.nicknames.put(joinPlayerName, joinPlayerName);
+
+		NicknameData.updateNickname(joinPlayerName);
 
 		for (String name : ServerUtil.getAllPlayers_list())
 		{
@@ -27,6 +32,8 @@ public class NicknameHandler
 			if (!nickname.equals(username))
 				sendNickPacket(username, nickname, event.player);
 		}
+
+		sendNickPacketToAll(joinPlayerName, NicknameData.getNickname(joinPlayerName));
 	}
 
 	@SubscribeEvent
@@ -41,5 +48,13 @@ public class NicknameHandler
 		packet.writeString(username);
 		packet.writeString(nickname);
 		packet.sendToPlayer(player);
+	}
+
+	private void sendNickPacketToAll(String username, String nickname)
+	{
+		PacketCustom packet = new PacketCustom(PacketConstants.CHANNEL, PacketConstants.UPDATE_NICK_NAME);
+		packet.writeString(username);
+		packet.writeString(nickname);
+		packet.sendToClients();
 	}
 }

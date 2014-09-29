@@ -6,6 +6,7 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import net.minecraft.entity.player.EntityPlayer;
 import universalteam.universalcore.configuration.Config;
@@ -18,7 +19,7 @@ import java.lang.reflect.Type;
 
 public class NicknameData
 {
-	private static BiMap<String, String> nicknames;
+	public static BiMap<String, String> nicknames;
 	private static Gson gson;
 	private static Type type;
 	private static File nicknameFile;
@@ -44,7 +45,7 @@ public class NicknameData
 	public static void setNickname(String username, String nickname)
 	{
 		if (Strings.isNullOrEmpty(nickname) && nicknames.containsKey(username))
-			nicknames.remove(username);
+			nicknames.put(username, username);
 		else
 			nicknames.put(username, nickname);
 
@@ -87,12 +88,17 @@ public class NicknameData
 		if (!nicknameFile.exists())
 			return;
 
+		nicknames = HashBiMap.create();
+
 		try
 		{
-			nicknames = gson.fromJson(new FileReader(nicknameFile), type);
+			LinkedTreeMap<String, String> tempNicks = gson.fromJson(new FileReader(nicknameFile), type);
 
-			for (String username : nicknames.keySet())
-				updateNickname(username);
+			if (tempNicks.isEmpty())
+				return;
+
+			for (String name : tempNicks.keySet())
+				nicknames.put(name, tempNicks.get(name));
 		}
 		catch (Exception e)
 		{

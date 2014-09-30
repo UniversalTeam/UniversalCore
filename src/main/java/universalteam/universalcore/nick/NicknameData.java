@@ -67,7 +67,7 @@ public class NicknameData
 
 	public static String getUsername(String nickname)
 	{
-		return nicknames.inverse().containsKey(nickname) ? nicknames.get(nickname) : null;
+		return nicknames.containsValue(nickname) ? nicknames.inverse().get(nickname) : null;
 	}
 
 	private static void checkFileStructure()
@@ -94,7 +94,7 @@ public class NicknameData
 		{
 			LinkedTreeMap<String, String> tempNicks = gson.fromJson(new FileReader(nicknameFile), type);
 
-			if (tempNicks.isEmpty())
+			if (tempNicks == null || tempNicks.isEmpty())
 				return;
 
 			for (String name : tempNicks.keySet())

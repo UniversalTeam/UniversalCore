@@ -1,10 +1,14 @@
 package universalteam.universalcore.command;
 
+import com.google.common.collect.Lists;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.ChatComponentTranslation;
 import universalteam.universalcore.nick.NicknameData;
+
+import java.util.List;
+import java.util.Set;
 
 public class CommandRealName extends CommandBase
 {
@@ -32,5 +36,12 @@ public class CommandRealName extends CommandBase
 		}
 		else
 			throw new WrongUsageException("command.realname.usage", new Object[0]);
+	}
+
+	@Override
+	public List addTabCompletionOptions(ICommandSender sender, String[] args)
+	{
+		Set<String> usernames = NicknameData.nicknames.values();
+		return args.length == 1 ? getListOfStringsMatchingLastWord(args, usernames.toArray(new String[usernames.size()])) : null;
 	}
 }

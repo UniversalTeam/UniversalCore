@@ -1,10 +1,12 @@
 package universalteam.universalcore.command;
 
+import codechicken.lib.packet.PacketCustom;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentTranslation;
+import universalteam.universalcore.network.PacketConstants;
 import universalteam.universalcore.nick.NicknameData;
 
 import java.util.Arrays;
@@ -40,20 +42,36 @@ public class CommandNick extends CommandBase
 
 		if (args.length == 1 && args[0].equalsIgnoreCase("reset"))
 		{
-			NicknameData.setNickname(NicknameData.getUsername(player.getGameProfile().getName()), player.getGameProfile().getName());
+			updateNick(player.getGameProfile().getName(), player.getGameProfile().getName());
 			sender.addChatMessage(new ChatComponentTranslation("command.nick.reset.success"));
 		}
 		else if (args.length == 1)
 		{
-			NicknameData.setNickname(player.getGameProfile().getName(), args[0]);
+			updateNick(player.getGameProfile().getName(), args[0]);
 			sender.addChatMessage(new ChatComponentTranslation("command.nick.success"));
 		}
 		else
 			throwWrongUsage();
 	}
 
+	private void updateNick(String username, String nickname)
+	{
+		NicknameData.setNickname(username, nickname);
+
+		PacketCustom packet = new PacketCustom(PacketConstants.CHANNEL, PacketConstants.UPDATE_NICK_NAME);
+		packet.writeString(username);
+		packet.writeString(nickname);
+		packet.sendToServer();
+	}
+
 	private void throwWrongUsage()
 	{
 		throw new WrongUsageException("command.nick.usage", new Object[0]);
+	}
+
+	@Override
+	public List addTabCompletionOptions(ICommandSender sender, String[] args)
+	{
+		return args.length == 1 ? getListOfStringsMatchingLastWord(args, "reset") : null;
 	}
 }

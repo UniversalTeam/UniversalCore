@@ -22,6 +22,9 @@ public class UCSPH implements IServerPacketHandler
 			case UPDATE_DEV_RENDER_LINKS:
 				resendDevRenderLinksPacket(packet);
 				break;
+			case UPDATE_NICK_NAME:
+				resendNickNameUpdate(packet);
+				break;
 		}
 	}
 
@@ -40,5 +43,13 @@ public class UCSPH implements IServerPacketHandler
 	protected void resendDevRenderLinksPacket(PacketCustom packet)
 	{
 		new PacketCustom(CHANNEL, UPDATE_DEV_RENDER_LINKS).sendToClients();
+	}
+
+	protected void resendNickNameUpdate(PacketCustom packet)
+	{
+		PacketCustom p = new PacketCustom(CHANNEL, UPDATE_NICK_NAME);
+		p.writeString(packet.readString());
+		p.writeString(packet.readString());
+		p.sendToClients();
 	}
 }

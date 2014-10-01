@@ -31,8 +31,6 @@ public class DevRenderEventHandler
 	protected final String serverLocation = "https://dl.dropboxusercontent.com/u/169269665/UniversalTeam/devRender/devRender.txt";
 	protected final int timeout = 1000;
 
-	private static final Graphics TEST_GRAPHICS = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB).getGraphics();
-
 	public Map<String, String> links = Maps.newHashMap();
 	public Map<String, DevRenderEntry> renderEntries = Maps.newHashMap();
 	public boolean resetRender = false;

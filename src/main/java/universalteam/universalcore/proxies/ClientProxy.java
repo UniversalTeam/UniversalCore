@@ -61,7 +61,7 @@ public class ClientProxy extends CommonProxy
 
 	public void initClientEventHandlers()
 	{
-		EventUtil.register(new DevRenderEventHandler());
+		//EventUtil.register(new DevRenderEventHandler());
 		EventUtil.register(new UCVersionChecker());
 		EventUtil.register(new CustomBlockHighLighHandler());
 	}

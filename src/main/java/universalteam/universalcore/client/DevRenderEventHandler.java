@@ -27,6 +27,7 @@ import java.util.Map;
 
 import static universalteam.universalcore.UniversalCore.logger;
 
+@Deprecated
 public class DevRenderEventHandler
 {
 	protected final String serverLocation = "https://dl.dropboxusercontent.com/u/169269665/UniversalTeam/devRender/devRender.txt";

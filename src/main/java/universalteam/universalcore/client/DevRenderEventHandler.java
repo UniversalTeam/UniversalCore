@@ -13,6 +13,7 @@ import net.minecraftforge.client.event.RenderLivingEvent;
 import org.lwjgl.opengl.GL11;
 import universalteam.universalcore.libs.environment.EnvironmentChecks;
 import universalteam.universalcore.network.PacketConstants;
+import universalteam.universalcore.utils.math.MathUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -184,10 +185,7 @@ public class DevRenderEventHandler
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			if (entry.renderUpsideDown())
-			{ //FIXME
-				GL11.glTranslatef(0.0F, event.entity.height + 0.1F, 0.0F);
-				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-			}
+				GL11.glRotatef((float) MathUtil.PI, 1.0F, 1.0F, 0.0F);
 			this.resetRender = true;
 		}
 	}
@@ -200,8 +198,6 @@ public class DevRenderEventHandler
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glDisable(GL11.GL_BLEND);
 		}
-
-		//TODO redo the upside-down render
 	}
 
 	protected void sendUpdatePacket(String username)

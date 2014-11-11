@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import universalteam.universalcore.configuration.Config;
 import universalteam.universalcore.utils.ServerUtil;
@@ -49,7 +51,8 @@ public class NicknameData
 		else
 			nicknames.put(username, nickname);
 
-		updateNickname(username);
+		if (FMLCommonHandler.instance().getSide().equals(Side.SERVER))
+			updateNickname(username);
 	}
 
 	public static void updateNickname(String username)

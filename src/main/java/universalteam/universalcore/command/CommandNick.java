@@ -61,7 +61,7 @@ public class CommandNick extends CommandBase
 		PacketCustom packet = new PacketCustom(PacketConstants.CHANNEL, PacketConstants.UPDATE_NICK_NAME);
 		packet.writeString(username);
 		packet.writeString(nickname);
-		packet.sendToServer();
+		packet.sendToClients();
 	}
 
 	private void throwWrongUsage()

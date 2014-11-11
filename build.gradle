@@ -44,8 +44,8 @@ repositories {
 dependencies {
     compile "codechicken:CodeChickenLib:${config.version.minecraft}-${config.version.ccl}:dev"
     compile "codechicken:ForgeMultipart:${config.version.minecraft}-${config.version.FMP}:dev"
-    compile "codechicken:CodeChickenCore:${config.version.minecraft}-${config.version.ccc}:dev"
-    compile "codechicken:NotEnoughItems:${config.version.minecraft}-${config.version.nei}:dev"
+    //compile "codechicken:CodeChickenCore:${config.version.minecraft}-${config.version.ccc}:dev"
+    //compile "codechicken:NotEnoughItems:${config.version.minecraft}-${config.version.nei}:dev"
 }
 
 

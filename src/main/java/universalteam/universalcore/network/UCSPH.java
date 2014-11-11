@@ -5,7 +5,9 @@ import codechicken.lib.packet.PacketCustom.IServerPacketHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.play.INetHandlerPlayServer;
 
-import static universalteam.universalcore.network.PacketConstants.*;
+import static universalteam.universalcore.network.PacketConstants.CHANNEL;
+import static universalteam.universalcore.network.PacketConstants.TILE_PACKET;
+import static universalteam.universalcore.network.PacketConstants.UPDATE_NICK_NAME;
 
 public class UCSPH implements IServerPacketHandler
 {
@@ -16,33 +18,10 @@ public class UCSPH implements IServerPacketHandler
 		{
 			case TILE_PACKET:
 				break; //TODO: implement
-			case UPDATE_DEV_RENDER:
-				resendDevRenderPacket(packet);
-				break;
-			case UPDATE_DEV_RENDER_LINKS:
-				resendDevRenderLinksPacket(packet);
-				break;
 			case UPDATE_NICK_NAME:
 				resendNickNameUpdate(packet);
 				break;
 		}
-	}
-
-	protected void resendDevRenderPacket(PacketCustom packet)
-	{
-		PacketCustom p = new PacketCustom(CHANNEL, UPDATE_DEV_RENDER);
-		p.writeString(packet.readString());
-		p.writeFloat(packet.readFloat());
-		p.writeFloat(packet.readFloat());
-		p.writeFloat(packet.readFloat());
-		p.writeFloat(packet.readFloat());
-		p.writeBoolean(packet.readBoolean());
-		p.sendToClients();
-	}
-
-	protected void resendDevRenderLinksPacket(PacketCustom packet)
-	{
-		new PacketCustom(CHANNEL, UPDATE_DEV_RENDER_LINKS).sendToClients();
 	}
 
 	protected void resendNickNameUpdate(PacketCustom packet)

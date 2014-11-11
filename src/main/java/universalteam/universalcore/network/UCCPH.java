@@ -4,10 +4,10 @@ import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustom.IClientPacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.INetHandlerPlayClient;
-import universalteam.universalcore.client.DevRenderEventHandler;
 import universalteam.universalcore.nick.NicknameData;
 
-import static universalteam.universalcore.network.PacketConstants.*;
+import static universalteam.universalcore.network.PacketConstants.TILE_PACKET;
+import static universalteam.universalcore.network.PacketConstants.UPDATE_NICK_NAME;
 
 public class UCCPH implements IClientPacketHandler
 {
@@ -18,12 +18,6 @@ public class UCCPH implements IClientPacketHandler
 		{
 			case TILE_PACKET:
 				break; //TODO: implement
-			case UPDATE_DEV_RENDER:
-				DevRenderEventHandler.instance.handleUpdatePacket(packet);
-				break;
-			case UPDATE_DEV_RENDER_LINKS:
-				DevRenderEventHandler.instance.rebuildLinks();
-				break;
 			case UPDATE_NICK_NAME:
 				NicknameData.setNickname(packet.readString(), packet.readString());
 				break;

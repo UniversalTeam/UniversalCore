@@ -55,6 +55,9 @@ minecraft {
 
     replaceIn 'universalteam/universalcore/libs/ReferenceCore.java'
     replace "@VERSION@", config.version.mod
+
+    replaceIn'universalteam/universalcore/libs/environment/EnvironmentChecks.java'
+    replace "OBF=flase", "OBF=true"
 }
 processResources
 {

@@ -13,6 +13,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import universalteam.universalcore.libs.ReferenceCore;
+import universalteam.universalcore.libs.environment.EnvironmentChecks;
 
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class UCVersionChecker
 
 	protected static boolean isNewVersion(String oldVersion, String newVersion)
 	{
-		if (oldVersion.equals("@VERSION@")) //Check if this is in a dev environment or not.
+		if (!EnvironmentChecks.isObfuscated()) //Check if this is in a dev environment or not.
 			return false;
 
 		String[] oldVersionTokens = oldVersion.trim().split("\\.");

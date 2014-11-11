@@ -1,12 +1,11 @@
 package universalteam.universalcore.proxies;
 
 import codechicken.lib.packet.PacketCustom;
-import cpw.mods.fml.common.FMLCommonHandler;
-import net.minecraftforge.common.MinecraftForge;
 import universalteam.universalcore.command.CommandNick;
 import universalteam.universalcore.command.CommandRealName;
 import universalteam.universalcore.command.UCCommand;
 import universalteam.universalcore.compat.UCPluginListener;
+import universalteam.universalcore.libs.environment.EnvironmentChecks;
 import universalteam.universalcore.network.PacketConstants;
 import universalteam.universalcore.network.UCSPH;
 import universalteam.universalcore.nick.NicknameData;

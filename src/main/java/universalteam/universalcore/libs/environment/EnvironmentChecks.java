@@ -12,6 +12,8 @@ public class EnvironmentChecks
 	public static boolean hasOptifine;
 	protected static UCLogger logger = UniversalCore.logger.setSubName("EnvironmentChecks");
 
+	protected static final String obf = "OBF=false";
+
 	public static void checkEnvironement()
 	{
 		if (FMLCommonHandler.instance().getSidedDelegate().getSide() == Side.CLIENT && ((FMLClientHandler.instance().hasOptifine()) || Loader.isModLoaded("optifine")))
@@ -19,5 +21,10 @@ public class EnvironmentChecks
 			hasOptifine = true;
 			logger.warning("Optifine has been detected on your Minecraft installation, this can cause (rendering) issues");
 		}
+	}
+
+	public static boolean isObfuscated()
+	{
+		return Boolean.parseBoolean(obf.substring(obf.indexOf('=') + 1));
 	}
 }

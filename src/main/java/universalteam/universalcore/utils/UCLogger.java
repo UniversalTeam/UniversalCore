@@ -1,6 +1,7 @@
 package universalteam.universalcore.utils;
 
 import universalteam.universalcore.libs.ReferenceCore;
+import universalteam.universalcore.libs.environment.EnvironmentChecks;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,7 +51,7 @@ public class UCLogger
 	{
 		if (this.canLog)
 		{
-			if (level.equals(CustomLevel.DEBUG) && ObfuscationUtil.isObfuscated())
+			if (level.equals(CustomLevel.DEBUG) && EnvironmentChecks.isObfuscated())
 				return;
 
 			logger.log(level, s);

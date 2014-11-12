@@ -73,7 +73,7 @@ public class UCVersionChecker
 
 	protected static boolean isNewVersion(String oldVersion, String newVersion)
 	{
-		if (!EnvironmentChecks.isObfuscated()) //Check if this is in a dev environment or not.
+		if (!EnvironmentChecks.isObfuscated())
 			return false;
 
 		String[] oldVersionTokens = oldVersion.trim().split("\\.");
@@ -111,7 +111,7 @@ public class UCVersionChecker
 				player.addChatComponentMessage(new ChatComponentText("-" + line.replaceAll("\\t", "")));
 
 			if (count != newVersionInstances.size())
-			player.addChatComponentMessage(new ChatComponentText("")); // add empty line to split different mods
+				player.addChatComponentMessage(new ChatComponentText("")); // add empty line to split different mods
 		}
 
 		reported = true;

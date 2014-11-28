@@ -12,7 +12,7 @@ import universalteam.universalcore.libs.environment.EnvironmentChecks;
 import universalteam.universalcore.proxies.CommonProxy;
 import universalteam.universalcore.utils.UCLogger;
 
-@Mod(modid = ReferenceCore.MODID, name = ReferenceCore.MODNAME, version = ReferenceCore.VERSION, dependencies = "before:VersionChecker")
+@Mod(modid = ReferenceCore.MODID, name = ReferenceCore.MODNAME, version = ReferenceCore.VERSION, dependencies = "before:VersionChecker", guiFactory = "universalteam.universalcore.configuration.GuiConfigFactory")
 public class UniversalCore
 {
 	@Mod.Instance(ReferenceCore.MODID)

@@ -4,6 +4,7 @@ import codechicken.lib.packet.PacketCustom;
 import universalteam.universalcore.command.CommandNick;
 import universalteam.universalcore.command.CommandRealName;
 import universalteam.universalcore.compat.UCPluginListener;
+import universalteam.universalcore.configuration.Config;
 import universalteam.universalcore.network.PacketConstants;
 import universalteam.universalcore.network.UCSPH;
 import universalteam.universalcore.nick.NicknameData;
@@ -16,6 +17,8 @@ public class CommonProxy
 {
 	public void preInit()
 	{
+		Config.initConfig();
+
 		initEventHandlers();
 
 		NicknameData.initialize();
@@ -53,5 +56,6 @@ public class CommonProxy
 	{
 		EventUtil.register(new RetroactiveWorldGenerator());
 		EventUtil.register(new NicknameHandler());
+		EventUtil.register(new Config());
 	}
 }

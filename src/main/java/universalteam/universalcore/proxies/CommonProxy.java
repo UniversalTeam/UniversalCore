@@ -22,6 +22,8 @@ public class CommonProxy
 		initEventHandlers();
 
 		NicknameData.initialize();
+
+		Tweaks.initTweakBlocks();
 	}
 
 	public void init()
@@ -57,5 +59,16 @@ public class CommonProxy
 		EventUtil.register(new RetroactiveWorldGenerator());
 		EventUtil.register(new NicknameHandler());
 		EventUtil.register(new Config());
+	}
+
+	public static class Tweaks
+	{
+		public static void initTweakBlocks()
+		{
+			if (Config.spreadMoss.getBoolean(true))
+			{
+
+			}
+		}
 	}
 }

@@ -67,7 +67,16 @@ public class CommonProxy
 		{
 			if (Config.spreadMoss.getBoolean(true))
 			{
-
+				/*try
+				{
+					BlockSpreadingMossyCobblestone newCobble = new BlockSpreadingMossyCobblestone();
+					GameRegistry.addSubstitutionAlias("minecraft:mossy_cobblestone", GameRegistry.Type.BLOCK, newCobble);
+					GameRegistry.addSubstitutionAlias("minecraft:mossy_cobblestone", GameRegistry.Type.ITEM, new ItemBlock(newCobble));
+				}
+				catch (ExistingSubstitutionException e)
+				{
+					e.printStackTrace();
+				}*/
 			}
 		}
 	}
